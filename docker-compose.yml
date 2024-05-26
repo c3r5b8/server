@@ -76,7 +76,7 @@ services:
       - TORRENTING_PORT=6881
     volumes:
       - ./services/qbittorrent:/config
-      - /mnt/fat_ssd/downloads:/downloads
+      - /mnt/fat_ssd/downloads:/data/completed
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.c3r5b8.dev`)"
