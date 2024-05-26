@@ -45,11 +45,12 @@ services:
       - TZ=Etc/Kyiv
     volumes:
       - ./services/sonarr:/config
+      - /mnt/fat_ssd/downloads:/downloads"
+      - /mnt/fat_ssd/media/tv:/tv"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.c3r5b8.dev`)"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
-      - /mnt/fat_ssd/:/data
     restart: unless-stopped
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
