@@ -222,7 +222,7 @@ services:
     devices:
       - "/dev/dri:/dev/dri"
     volumes:
-      - "/mnt/fat_ssd/nextcloud/c3r5b8/files/Photos:/photoprism/originals" # Original media files (DO NOT REMOVE)
+      - "/mnt/fat_ssd/photoprism:/photoprism/originals" # Original media files (DO NOT REMOVE)
       - "/mnt/fat_ssd/photoprism:/photoprism/storage" # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
 
   mariadb:
