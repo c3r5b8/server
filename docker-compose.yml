@@ -49,10 +49,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.c3r5b8.dev`)"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
-      - /mnt/fat_ssd/media/TV:/tv #optional
-      - /mnt/fat_ssd/downloads:/downloads #optional
-      # ports:
-      # - 8989:8989
+      - /mnt/fat_ssd/:/data
     restart: unless-stopped
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
