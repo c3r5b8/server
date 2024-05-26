@@ -45,8 +45,8 @@ services:
       - TZ=Etc/Kyiv
     volumes:
       - ./services/sonarr:/config
-      - /mnt/fat_ssd/downloads:/downloads"
-      - /mnt/fat_ssd/media/tv:/tv"
+      - /mnt/fat_ssd/downloads:/downloads
+      - /mnt/fat_ssd/media/tv:/tv
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.c3r5b8.dev`)"
