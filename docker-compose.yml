@@ -223,7 +223,7 @@ services:
       - "/dev/dri:/dev/dri"
     volumes:
       - "/mnt/fat_ssd/photoprism:/photoprism/originals" # Original media files (DO NOT REMOVE)
-      - "/mnt/fat_ssd/photoprism:/photoprism/storage" # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
+      - "/mnt/fat_ssd/photoprism_config:/photoprism/storage" # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
 
   mariadb:
     image: mariadb:11
