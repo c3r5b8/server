@@ -1,15 +1,18 @@
-if [ "$1" == "push" ]; then
+#!/bin/bash
 
+function encrypt_env_file() {
     if [ -f .env ]; then
         sops -e .env > enc.env
     fi
+}
 
+function commit_and_push() {
     git add -A
-    git commit -a -m "$2"
+    git commit -a -m "$1"
     git push
-elif [ "$1" == "pull" ]; then
-    git pull
+}
 
+function decrypt_env_file() {
     if [ -n "$(git diff HEAD~1 HEAD --name-only | grep 'enc.env')" ]; then
         echo "Encrypted .env file has changed, decrypting..."
         sops -d enc.env > .env
@@ -21,4 +24,24 @@ elif [ "$1" == "pull" ]; then
     else
         echo "No changes in encrypted .env file, no action taken."
     fi
+}
+
+function push_changes() {
+    if [ -z "$2" ]; then
+        echo "Error: Please provide a commit message."
+        exit 1
+    fi
+    encrypt_env_file
+    commit_and_push "$2"
+}
+
+function pull_changes() {
+    git pull
+    decrypt_env_file
+}
+
+if [ "$1" == "push" ]; then
+    push_changes "$1" "$2"
+elif [ "$1" == "pull" ]; then
+    pull_changes
 fi
