@@ -115,3 +115,18 @@ services:
       - CAPTCHA_SOLVER=none
       - TZ=Europe/Kyiv
     restart: unless-stopped
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/Kyiv
+    volumes:
+      - ./services/nextcloud:/config
+      - /mnt/fat_ssd/:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.c3r5b8.dev`)"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
+    restart: unless-stopped
