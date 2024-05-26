@@ -52,6 +52,22 @@ services:
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.c3r5b8.dev`)"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
     restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/Kyiv
+    volumes:
+      - ./services/radarr:/config
+      - /mnt/fat_ssd/downloads:/downloads
+      - /mnt/fat_ssd/media/movies:/movies
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.c3r5b8.dev`)"
+      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+    restart: unless-stopped
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
