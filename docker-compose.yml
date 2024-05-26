@@ -49,8 +49,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.c3r5b8.dev`)"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
-      # - /path/to/tvseries:/tv #optional
-      # - /path/to/downloadclient-downloads:/downloads #optional
+      - /mnt/fat_ssd/media/TV:/tv #optional
+      - /mnt/fat_ssd/downloads:/downloads #optional
       # ports:
       # - 8989:8989
     restart: unless-stopped
@@ -79,7 +79,7 @@ services:
       - TORRENTING_PORT=6881
     volumes:
       - ./services/qbittorrent:/config
-      # - /:/downloads
+      - /mnt/fat_ssd/downloads:/downloads
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.c3r5b8.dev`)"
