@@ -18,8 +18,8 @@ function decrypt_env_file() {
         sops -d enc.env > .env
         if [ "$(hostname)" == "sargas" ]; then
             echo "Restarting Docker Compose services..."
-            docker-compose down
-            docker-compose up -d
+            sudo docker compose down
+            sudo docker compose up -d
         fi
     else
         echo "No changes in encrypted .env file, no action taken."
