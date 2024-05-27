@@ -31,7 +31,12 @@ function push_changes() {
         echo "Error: Please provide a commit message."
         exit 1
     fi
-    encrypt_env_file
+
+    env_file=$(cat .env)
+    enc_env_file=$(sops -d enc.env)
+    if [ "$env_file" != "$enc_env_file" ]; then
+        encrypt_env_file
+    fi
     commit_and_push "$2"
 }
 
