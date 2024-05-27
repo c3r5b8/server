@@ -40,7 +40,7 @@ services:
     image: vaultwarden/server:latest
     container_name: vaultwarden
     environment:
-      - DOMAIN=pass.c3r5b8.dev
+      - DOMAIN=https://pass.c3r5b8.dev
     restart: unless-stopped
     volumes:
       - ./services/vaultwarden:/data
