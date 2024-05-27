@@ -126,9 +126,12 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/Kyiv
+      - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
     volumes:
       - ./services/jellyfin:/config
       - /mnt/fat_ssd/media:/media
+    devices:
+      - /dev/dri:/dev/dri
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.c3r5b8.dev`)"
