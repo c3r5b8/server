@@ -23,6 +23,7 @@ function decrypt_env_file() {
         fi
     else
         echo "No changes in encrypted .env file, no action taken."
+        sudo docker compose up -d
     fi
 }
 
