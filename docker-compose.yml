@@ -160,6 +160,16 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
+  maloja:
+    image: "krateng/maloja:latest"
+    volumes:
+      - ./services/maloja:/data
+    environment:
+      - MALOJA_DATA_DIRECTORY=/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.maloja.rule=Host(`maloja.c3r5b8.dev`)"
+      - "traefik.http.services.maloja.loadbalancer.server.port=42010"
   #
   # immich
   #
