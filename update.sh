@@ -34,9 +34,13 @@ function push_changes() {
 
     env_file=$(cat .env)
     enc_env_file=$(sops -d enc.env)
-    if [ "$env_file" != "$enc_env_file" ]; then
+    diff_output=$(diff <(echo "$env_file") <(echo "$enc_env_file"))
+    if [ -n "$diff_output" ]; then
+        echo "Changes in .env file detected, encrypting..."
         encrypt_env_file
-    fi
+    else
+        echo "No changes in .env file, no action taken."
+    fi    
     commit_and_push "$2"
 }
 
