@@ -171,6 +171,23 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.maloja.rule=Host(`maloja.c3r5b8.dev`)"
       - "traefik.http.services.maloja.loadbalancer.server.port=42010"
+
+  couchdb:
+    image: couchdb
+    container_name: obsidian-livesync
+    user: 1000:1000
+    environment:
+      - COUCHDB_USER=${COUCHDB_USER}
+      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
+    volumes:
+      - ./services/couchdb/data:/opt/couchdb/data
+      - ./services/couchdb/local.ini:/opt/couchdb/etc/local.ini
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.obsidian-livesync.rule=Host(`ols.c3r5b8.dev`)"
+      - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
+    restart: unless-stopped
+
   #
   # immich
   #
