@@ -171,6 +171,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.maloja.rule=Host(`maloja.c3r5b8.dev`)"
       - "traefik.http.services.maloja.loadbalancer.server.port=42010"
+    restart: unless-stopped
 
   couchdb:
     image: couchdb
