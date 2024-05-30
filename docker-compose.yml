@@ -30,7 +30,7 @@ services:
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN}
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "../services/traefik/acme.json:/acme.json"
+      - "./services/traefik/acme.json:/acme.json"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
@@ -43,7 +43,7 @@ services:
       - PGID=1000
       - TZ=Etc/Kyiv
     volumes:
-      - ../services/sonarr:/config
+      - ./services/sonarr:/config
       - /mnt/fat_ssd/downloads:/downloads
       - /mnt/fat_ssd/media/tv:/tv
     labels:
@@ -60,7 +60,7 @@ services:
       - PGID=1000
       - TZ=Etc/Kyiv
     volumes:
-      - ../services/radarr:/config
+      - ./services/radarr:/config
       - /mnt/fat_ssd/downloads:/downloads
       - /mnt/fat_ssd/media/movies:/movies
     labels:
@@ -81,7 +81,7 @@ services:
       - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.c3r5b8.dev`)"
       - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
     volumes:
-      - ../services/prowlarr:/config
+      - ./services/prowlarr:/config
     restart: unless-stopped
 
   qbittorrent:
@@ -94,7 +94,7 @@ services:
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
-      - ../services/qbittorrent:/config
+      - ./services/qbittorrent:/config
       - /mnt/fat_ssd/downloads:/downloads
     labels:
       - "traefik.enable=true"
@@ -128,7 +128,7 @@ services:
       - TZ=Etc/Kyiv
       - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
     volumes:
-      - ../services/jellyfin:/config
+      - ./services/jellyfin:/config
       - /mnt/fat_ssd/media:/media
     devices:
       - /dev/dri:/dev/dri
@@ -146,7 +146,7 @@ services:
       - PGID=1000
       - TZ=Etc/Kyiv
     volumes:
-      - ../services/nextcloud:/config
+      - ./services/nextcloud:/config
       - /mnt/fat_ssd/nextcloud:/data
     labels:
       - "traefik.enable=true"
@@ -163,7 +163,7 @@ services:
   maloja:
     image: "krateng/maloja:latest"
     volumes:
-      - ../services/maloja:/data
+      - ./services/maloja:/data
     environment:
       - MALOJA_DATA_DIRECTORY=/data
       - MALOJA_FORCE_PASSWORD=${MALOJA_FORCE_PASSWORD}
@@ -181,8 +181,8 @@ services:
       - COUCHDB_USER=${COUCHDB_USER}
       - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
     volumes:
-      - ../services/couchdb/data:/opt/couchdb/data
-      - ../services/couchdb/local.ini:/opt/couchdb/etc/local.ini
+      - ./services/couchdb/data:/opt/couchdb/data
+      - ./services/couchdb/local.ini:/opt/couchdb/etc/local.ini
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.obsidian-livesync.rule=Host(`ols.c3r5b8.dev`)"
