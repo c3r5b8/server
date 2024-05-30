@@ -35,45 +35,45 @@ services:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
 
-    qbittorrent:
-      image: lscr.io/linuxserver/qbittorrent:latest
-      container_name: qbittorrent
-      environment:
-        - PUID=1000
-        - PGID=1000
-        - TZ=Etc/UTC
-        - WEBUI_PORT=8080
-        - TORRENTING_PORT=6881
-        - DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
-      volumes:
-        - ./services/qbittorrent:/config
-        - /mnt/fat_ssd/media:/downloads
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.c3r5b8.dev`)"
-        - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
-      ports:
-        - 6881:6881
-        - 6881:6881/udp
-      restart: unless-stopped
-    #   jellyfin:
-    #     image: lscr.io/linuxserver/jellyfin:latest
-    #     container_name: jellyfin
-    #     environment:
-    #       - PUID=1000
-    #       - PGID=1000
-    #       - TZ=Etc/Kyiv
-    #       - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
-    #     volumes:
-    #       - ./services/jellyfin:/config
-    #       - /mnt/fat_ssd/media:/media
-    #     devices:
-    #       - /dev/dri:/dev/dri
-    #     labels:
-    #       - "traefik.enable=true"
-    #       - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.c3r5b8.dev`)"
-    #       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
-    #     restart: unless-stopped
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+      - DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
+    volumes:
+      - ./services/qbittorrent:/config
+      - /mnt/fat_ssd/media:/downloads
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.c3r5b8.dev`)"
+      - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+  #   jellyfin:
+  #     image: lscr.io/linuxserver/jellyfin:latest
+  #     container_name: jellyfin
+  #     environment:
+  #       - PUID=1000
+  #       - PGID=1000
+  #       - TZ=Etc/Kyiv
+  #       - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
+  #     volumes:
+  #       - ./services/jellyfin:/config
+  #       - /mnt/fat_ssd/media:/media
+  #     devices:
+  #       - /dev/dri:/dev/dri
+  #     labels:
+  #       - "traefik.enable=true"
+  #       - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.c3r5b8.dev`)"
+  #       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+  #     restart: unless-stopped
 
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:latest
