@@ -35,243 +35,243 @@ services:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
 
-  sonarr:
-    image: lscr.io/linuxserver/sonarr:latest
-    container_name: sonarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/Kyiv
-    volumes:
-      - ./services/sonarr:/config
-      - /mnt/fat_ssd/downloads:/downloads
-      - /mnt/fat_ssd/media/tv:/tv
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.sonarr.rule=Host(`sonarr.c3r5b8.dev`)"
-      - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
-    restart: unless-stopped
+#   sonarr:
+#     image: lscr.io/linuxserver/sonarr:latest
+#     container_name: sonarr
+#     environment:
+#       - PUID=1000
+#       - PGID=1000
+#       - TZ=Etc/Kyiv
+#     volumes:
+#       - ./services/sonarr:/config
+#       - /mnt/fat_ssd/downloads:/downloads
+#       - /mnt/fat_ssd/media/tv:/tv
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.sonarr.rule=Host(`sonarr.c3r5b8.dev`)"
+#       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+#     restart: unless-stopped
 
-  radarr:
-    image: lscr.io/linuxserver/radarr:latest
-    container_name: radarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/Kyiv
-    volumes:
-      - ./services/radarr:/config
-      - /mnt/fat_ssd/downloads:/downloads
-      - /mnt/fat_ssd/media/movies:/movies
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.radarr.rule=Host(`radarr.c3r5b8.dev`)"
-      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
-    restart: unless-stopped
+#   radarr:
+#     image: lscr.io/linuxserver/radarr:latest
+#     container_name: radarr
+#     environment:
+#       - PUID=1000
+#       - PGID=1000
+#       - TZ=Etc/Kyiv
+#     volumes:
+#       - ./services/radarr:/config
+#       - /mnt/fat_ssd/downloads:/downloads
+#       - /mnt/fat_ssd/media/movies:/movies
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.radarr.rule=Host(`radarr.c3r5b8.dev`)"
+#       - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+#     restart: unless-stopped
 
-  prowlarr:
-    image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/Kyiv
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.c3r5b8.dev`)"
-      - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
-    volumes:
-      - ./services/prowlarr:/config
-    restart: unless-stopped
+#   prowlarr:
+#     image: lscr.io/linuxserver/prowlarr:latest
+#     container_name: prowlarr
+#     environment:
+#       - PUID=1000
+#       - PGID=1000
+#       - TZ=Etc/Kyiv
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.c3r5b8.dev`)"
+#       - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+#     volumes:
+#       - ./services/prowlarr:/config
+#     restart: unless-stopped
 
-  qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:latest
-    container_name: qbittorrent
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-      - WEBUI_PORT=8080
-      - TORRENTING_PORT=6881
-    volumes:
-      - ./services/qbittorrent:/config
-      - /mnt/fat_ssd/downloads:/downloads
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.c3r5b8.dev`)"
-      - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
-    ports:
-      - 6881:6881
-      - 6881:6881/udp
-    restart: unless-stopped
+#   qbittorrent:
+#     image: lscr.io/linuxserver/qbittorrent:latest
+#     container_name: qbittorrent
+#     environment:
+#       - PUID=1000
+#       - PGID=1000
+#       - TZ=Etc/UTC
+#       - WEBUI_PORT=8080
+#       - TORRENTING_PORT=6881
+#     volumes:
+#       - ./services/qbittorrent:/config
+#       - /mnt/fat_ssd/downloads:/downloads
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.c3r5b8.dev`)"
+#       - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
+#     ports:
+#       - 6881:6881
+#       - 6881:6881/udp
+#     restart: unless-stopped
 
-  flaresolverr:
-    image: ghcr.io/flaresolverr/flaresolverr:latest
-    container_name: flaresolverr
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.c3r5b8.dev`)"
-      - "traefik.http.services.flaresolverr.loadbalancer.server.port=8191"
-    environment:
-      - LOG_LEVEL=info
-      - LOG_HTML=false
-      - CAPTCHA_SOLVER=none
-      - TZ=Europe/Kyiv
-    restart: unless-stopped
+#   flaresolverr:
+#     image: ghcr.io/flaresolverr/flaresolverr:latest
+#     container_name: flaresolverr
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.c3r5b8.dev`)"
+#       - "traefik.http.services.flaresolverr.loadbalancer.server.port=8191"
+#     environment:
+#       - LOG_LEVEL=info
+#       - LOG_HTML=false
+#       - CAPTCHA_SOLVER=none
+#       - TZ=Europe/Kyiv
+#     restart: unless-stopped
 
-  jellyfin:
-    image: lscr.io/linuxserver/jellyfin:latest
-    container_name: jellyfin
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/Kyiv
-      - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
-    volumes:
-      - ./services/jellyfin:/config
-      - /mnt/fat_ssd/media:/media
-    devices:
-      - /dev/dri:/dev/dri
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.c3r5b8.dev`)"
-      - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
-    restart: unless-stopped
+#   jellyfin:
+#     image: lscr.io/linuxserver/jellyfin:latest
+#     container_name: jellyfin
+#     environment:
+#       - PUID=1000
+#       - PGID=1000
+#       - TZ=Etc/Kyiv
+#       - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
+#     volumes:
+#       - ./services/jellyfin:/config
+#       - /mnt/fat_ssd/media:/media
+#     devices:
+#       - /dev/dri:/dev/dri
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.c3r5b8.dev`)"
+#       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+#     restart: unless-stopped
 
-  nextcloud:
-    image: lscr.io/linuxserver/nextcloud:latest
-    container_name: nextcloud
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/Kyiv
-    volumes:
-      - ./services/nextcloud:/config
-      - /mnt/fat_ssd/nextcloud:/data
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.c3r5b8.dev`)"
-      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
-    restart: unless-stopped
+#   nextcloud:
+#     image: lscr.io/linuxserver/nextcloud:latest
+#     container_name: nextcloud
+#     environment:
+#       - PUID=1000
+#       - PGID=1000
+#       - TZ=Etc/Kyiv
+#     volumes:
+#       - ./services/nextcloud:/config
+#       - /mnt/fat_ssd/nextcloud:/data
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.c3r5b8.dev`)"
+#       - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+#     restart: unless-stopped
 
-  watchtower:
-    image: containrrr/watchtower
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
+#   watchtower:
+#     image: containrrr/watchtower
+#     volumes:
+#       - /var/run/docker.sock:/var/run/docker.sock
+#     restart: unless-stopped
 
-  maloja:
-    image: "krateng/maloja:latest"
-    volumes:
-      - ./services/maloja:/data
-    environment:
-      - MALOJA_DATA_DIRECTORY=/data
-      - MALOJA_FORCE_PASSWORD=${MALOJA_FORCE_PASSWORD}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.maloja.rule=Host(`maloja.c3r5b8.dev`)"
-      - "traefik.http.services.maloja.loadbalancer.server.port=42010"
-    restart: unless-stopped
+#   maloja:
+#     image: "krateng/maloja:latest"
+#     volumes:
+#       - ./services/maloja:/data
+#     environment:
+#       - MALOJA_DATA_DIRECTORY=/data
+#       - MALOJA_FORCE_PASSWORD=${MALOJA_FORCE_PASSWORD}
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.maloja.rule=Host(`maloja.c3r5b8.dev`)"
+#       - "traefik.http.services.maloja.loadbalancer.server.port=42010"
+#     restart: unless-stopped
 
-  couchdb:
-    image: couchdb
-    container_name: obsidian-livesync
-    user: 1000:1000
-    environment:
-      - COUCHDB_USER=${COUCHDB_USER}
-      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
-    volumes:
-      - ./services/couchdb/data:/opt/couchdb/data
-      - ./services/couchdb/local.ini:/opt/couchdb/etc/local.ini
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.obsidian-livesync.rule=Host(`ols.c3r5b8.dev`)"
-      - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
-    restart: unless-stopped
+#   couchdb:
+#     image: couchdb
+#     container_name: obsidian-livesync
+#     user: 1000:1000
+#     environment:
+#       - COUCHDB_USER=${COUCHDB_USER}
+#       - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
+#     volumes:
+#       - ./services/couchdb/data:/opt/couchdb/data
+#       - ./services/couchdb/local.ini:/opt/couchdb/etc/local.ini
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.obsidian-livesync.rule=Host(`ols.c3r5b8.dev`)"
+#       - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
+#     restart: unless-stopped
 
-  #
-  # immich
-  #
-  immich-server:
-    container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
-    command: [ 'start.sh', 'immich' ]
-    volumes:
-      - ${UPLOAD_LOCATION}:/usr/src/app/upload
-      - /etc/localtime:/etc/localtime:ro
-    env_file:
-      - .env
+#   #
+#   # immich
+#   #
+#   immich-server:
+#     container_name: immich_server
+#     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+#     command: [ 'start.sh', 'immich' ]
+#     volumes:
+#       - ${UPLOAD_LOCATION}:/usr/src/app/upload
+#       - /etc/localtime:/etc/localtime:ro
+#     env_file:
+#       - .env
 
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.immich-server.rule=Host(`immich.c3r5b8.dev`)"
-      - "traefik.http.services.immich-server.loadbalancer.server.port=3001"
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.immich-server.rule=Host(`immich.c3r5b8.dev`)"
+#       - "traefik.http.services.immich-server.loadbalancer.server.port=3001"
 
-    depends_on:
-      - redis
-      - database
-    restart: always
+#     depends_on:
+#       - redis
+#       - database
+#     restart: always
 
-  immich-microservices:
-    container_name: immich_microservices
-    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
-    devices:
-      - /dev/dri:/dev/dri
-    command: [ 'start.sh', 'microservices' ]
-    volumes:
-      - ${UPLOAD_LOCATION}:/usr/src/app/upload
-      - /etc/localtime:/etc/localtime:ro
-    env_file:
-      - .env
-    depends_on:
-      - redis
-      - database
-    restart: always
+#   immich-microservices:
+#     container_name: immich_microservices
+#     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+#     devices:
+#       - /dev/dri:/dev/dri
+#     command: [ 'start.sh', 'microservices' ]
+#     volumes:
+#       - ${UPLOAD_LOCATION}:/usr/src/app/upload
+#       - /etc/localtime:/etc/localtime:ro
+#     env_file:
+#       - .env
+#     depends_on:
+#       - redis
+#       - database
+#     restart: always
 
-  immich-machine-learning:
-    container_name: immich_machine_learning
-    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
-    volumes:
-      - model-cache:/cache
-    env_file:
-      - .env
-    restart: always
+#   immich-machine-learning:
+#     container_name: immich_machine_learning
+#     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
+#     volumes:
+#       - model-cache:/cache
+#     env_file:
+#       - .env
+#     restart: always
 
-  redis:
-    container_name: immich_redis
-    image: registry.hub.docker.com/library/redis:6.2-alpine@sha256:84882e87b54734154586e5f8abd4dce69fe7311315e2fc6d67c29614c8de2672
-    restart: always
+#   redis:
+#     container_name: immich_redis
+#     image: registry.hub.docker.com/library/redis:6.2-alpine@sha256:84882e87b54734154586e5f8abd4dce69fe7311315e2fc6d67c29614c8de2672
+#     restart: always
 
-  database:
-    container_name: immich_postgres
-    image: registry.hub.docker.com/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_DB: ${DB_DATABASE_NAME}
-      POSTGRES_INITDB_ARGS: '--data-checksums'
-    volumes:
-      - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
-    restart: always
-    command:
-      [
-        "postgres",
-        "-c",
-        "shared_preload_libraries=vectors.so",
-        "-c",
-        'search_path="$$user", public, vectors',
-        "-c",
-        "logging_collector=on",
-        "-c",
-        "max_wal_size=2GB",
-        "-c",
-        "shared_buffers=512MB",
-        "-c",
-        "wal_compression=on"
-      ]
-#
-# immich end
-#
+#   database:
+#     container_name: immich_postgres
+#     image: registry.hub.docker.com/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
+#     environment:
+#       POSTGRES_PASSWORD: ${DB_PASSWORD}
+#       POSTGRES_USER: ${DB_USERNAME}
+#       POSTGRES_DB: ${DB_DATABASE_NAME}
+#       POSTGRES_INITDB_ARGS: '--data-checksums'
+#     volumes:
+#       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
+#     restart: always
+#     command:
+#       [
+#         "postgres",
+#         "-c",
+#         "shared_preload_libraries=vectors.so",
+#         "-c",
+#         'search_path="$$user", public, vectors',
+#         "-c",
+#         "logging_collector=on",
+#         "-c",
+#         "max_wal_size=2GB",
+#         "-c",
+#         "shared_buffers=512MB",
+#         "-c",
+#         "wal_compression=on"
+#       ]
+# #
+# # immich end
+# #
 
-volumes:
-  model-cache:
+# volumes:
+#   model-cache:
