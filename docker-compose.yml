@@ -97,19 +97,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
-  homer:
-    image: b4bz/homer
-    container_name: homer
-    volumes:
-      - ./services/homer:/www/assets
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.homer.rule=Host(`homer.c3r5b8.dev`)"
-      - "traefik.http.services.homer.loadbalancer.server.port=8080"
-    user: 1000:1000
-    environment:
-      - INIT_ASSETS=1
-
   maloja:
     image: "krateng/maloja:latest"
     volumes:
