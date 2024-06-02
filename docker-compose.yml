@@ -97,8 +97,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
-  version: '3'
-
   adguardhome:
     image: adguard/adguardhome
     container_name: adguardhome
