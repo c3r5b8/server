@@ -50,7 +50,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.transmission.rule=Host(`transmission.c3r5b8.dev`)"
-      - "traefik.http.routers.transmission.loadbalancer.server.port=9091"
+      - "traefik.http.services.transmission.loadbalancer.server.port=9091"
     ports:
       - 51413:51413
       - 51413:51413/udp
