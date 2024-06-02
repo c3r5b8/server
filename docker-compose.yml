@@ -46,7 +46,7 @@ services:
       - PASS=${TRANSMISSION_PASS}
     volumes:
       - ./services/transmission:/config
-      - /mnt/fat_ssd/downloads:/downloads
+      - /mnt/fat_ssd/media:/downloads
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.transmission.rule=Host(`transmission.c3r5b8.dev`)"
