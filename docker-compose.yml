@@ -97,16 +97,19 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
-  homepage:
-    image: ghcr.io/gethomepage/homepage:latest
-    container_name: homepage
+  homer:
+    image: b4bz/homer
+    container_name: homer
+    volumes:
+      - ./services/homer:/www/assets
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.homepage.rule=Host(`home.c3r5b8.dev`)"
-      - "traefik.http.services.homepage.loadbalancer.server.port=3000"
-    volumes:
-      - ./services/homepage:/app/config
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "traefik.http.routers.homer.rule=Host(`homer.c3r5b8.dev`)"
+      - "traefik.http.services.homer.loadbalancer.server.port=8080"
+    user: 1000:1000
+    environment:
+      - INIT_ASSETS=1
+
   maloja:
     image: "krateng/maloja:latest"
     volumes:
