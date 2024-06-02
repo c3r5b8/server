@@ -97,6 +97,27 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
+  dashy:
+    image: lissy93/dashy
+    container_name: Dashy
+    volumes:
+      - ./services/dashy:/app/user-data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashy.rule=Host(`start.c3r5b8.dev`)"
+      - "traefik.http.services.dashy.loadbalancer.server.port=8080"
+    environment:
+      - NODE_ENV=production
+      - UID=1000
+      - GID=1000
+    restart: unless-stopped
+    healthcheck:
+      test: [ 'CMD', 'node', '/app/services/healthcheck' ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
   maloja:
     image: "krateng/maloja:latest"
     volumes:
