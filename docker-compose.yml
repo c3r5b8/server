@@ -110,6 +110,20 @@ services:
       - "traefik.http.services.maloja.loadbalancer.server.port=42010"
     restart: unless-stopped
 
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - ./services/homarr/configs:/app/data/configs
+      - ./services/homarr/icons:/app/public/icons
+      - ./services/homarr/data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homarr.rule=Host(`homarr.c3r5b8.dev`)"
+      - "traefik.http.services.homarr.loadbalancer.server.port=7575"
+
   couchdb:
     image: couchdb
     container_name: obsidian-livesync
