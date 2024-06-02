@@ -123,7 +123,22 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.homarr.rule=Host(`homarr.c3r5b8.dev`)"
       - "traefik.http.services.homarr.loadbalancer.server.port=7575"
-
+  dash:
+    image: mauricenino/dashdot:latest
+    restart: unless-stopped
+    privileged: true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dash.rule=Host(`dash.c3r5b8.dev`)"
+      - "traefik.http.services.dash.loadbalancer.server.port=3001"
+    volumes:
+      - /:/mnt/host:ro
+    environment:
+      - DASHDOT_WIDGET_LIST=os,cpu,storage,ram,network
+      - DASHDOT_OS_LABEL_LIST=os,arch,up_since,dash_version
+      - DASHDOT_SHOW_HOST=true
+      - DASHDOT_CUSTOM_HOST=sargas
+      
   couchdb:
     image: couchdb
     container_name: obsidian-livesync
