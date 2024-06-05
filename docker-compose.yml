@@ -183,7 +183,7 @@ services:
     restart: unless-stopped
 
   factorio:
-    image: factoriotools/factorio
+    image: factoriotools/factorio:stable
     container_name: factorio
     environment:
       - INSTANCE_NAME=Mazafuckers
