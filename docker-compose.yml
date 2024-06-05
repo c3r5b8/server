@@ -193,6 +193,7 @@ services:
       - "27015:27015/tcp"
     volumes:
       - ./services/factorio:/factorio
+    restart: unless-stopped
 
   #
   # immich
