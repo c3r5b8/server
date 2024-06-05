@@ -182,6 +182,22 @@ services:
       - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
     restart: unless-stopped
 
+  factorio:
+    image: factoriotools/factorio
+    container_name: factorio
+    environment:
+      - INSTANCE_NAME=Mazafuckers
+      - INSTANCE_DESC=idk
+    ports:
+      # - "34197:34197/udp"
+      - "27015:27015/tcp"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.factorio.rule=Host(`factorio.c3r5b8.dev`)"
+      - "traefik.http.services.factorio.loadbalancer.server.port=34197"
+    volumes:
+      - ./services/factorio:/factorio
+
   #
   # immich
   #
