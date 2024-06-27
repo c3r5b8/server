@@ -197,25 +197,25 @@ services:
     volumes:
       - ./services/factorio:/factorio
     restart: unless-stopped
-  # terraria-server:
-  #   image: hexlo/terraria-server-docker:latest
-  #   container_name: terraria-server
-  #   restart: unless-stopped
-  #   stdin_open: true
-  #   tty: true
-  #   ports:
-  #     - 7777:7777
-  #   volumes:
-  #     - ./services/terraria/worlds:/root/.local/share/Terraria/Worlds
-  #   environment:
-  #     - world=/root/.local/share/Terraria/Worlds/wrld.wld
-  #     - autocreate=3
-  #     - worldname=world1
-  #     - difficulty=1
-  #     - maxplayers=128
-  #     - port=7777
-  #     - password=${TERRARIA_PASSWORD}
-  #     - motd="Welcome to server! :)"
+  terraria-server:
+    image: hexlo/terraria-server-docker:latest
+    container_name: terraria-server
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    ports:
+      - 7777:7777
+    volumes:
+      - ./services/terraria/worlds:/root/.local/share/Terraria/Worlds
+    environment:
+      - world=/root/.local/share/Terraria/Worlds/wrld.wld
+      - autocreate=3
+      - worldname=world1
+      - difficulty=1
+      - maxplayers=128
+      - port=7777
+      - password=${TERRARIA_PASSWORD}
+      - motd="Welcome to server! :)"
   #
   # immich
   #
