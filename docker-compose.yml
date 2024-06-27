@@ -197,29 +197,21 @@ services:
     volumes:
       - ./services/factorio:/factorio
     restart: unless-stopped
-  terraria-server:
-    image: hexlo/terraria-server-docker:latest
-    container_name: terraria-server
+  terraria:
+    image: ghcr.io/beardedio/terraria:latest
+    ports:
+      - '7777:7777'
     restart: unless-stopped
-    stdin_open: true
+    environment:
+      - world=/config/wrld.wld
+    volumes:
+      - ./services/terraria/config:/config
     tty: true
-    # ports:
-    #   - 7777:7777
+    stdin_open: true
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.terraria-server.rule=Host(`terraria.c3r5b8.dev`)"
       - "traefik.http.services.terraria-server.loadbalancer.server.port=7777"
-    volumes:
-      - ./services/terraria/worlds:/root/.local/share/Terraria/Worlds
-    environment:
-      - world=/root/.local/share/Terraria/Worlds/wrld.wld
-      - autocreate=3
-      - worldname=world1
-      - difficulty=1
-      - maxplayers=128
-      - port=7777
-      - password=${TERRARIA_PASSWORD}
-      - motd="Welcome to server! :)"
   #
   # immich
   #
