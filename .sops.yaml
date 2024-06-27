@@ -1,6 +1,6 @@
 keys:
   - &hosts:
-    - &antares age1maaytkua304ea5vt8lvy2gtd9pxxq9t5lm9g8qxv39x4eg0fvgdqxpme0p
+    - &antares age1z4jqp0u25am8chn5h2xdpmdr0q6fy7sr7nahvxdugygl3hla4sqsa7kmxj
     - &sargas age1k2v6delpxnc5zwg4uvp5zd96j4sxwq8y45av2nkyty80fx4r9gnqcp8w78
 creation_rules:
   - key_groups:
