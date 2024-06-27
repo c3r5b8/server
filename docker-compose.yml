@@ -208,7 +208,7 @@ services:
       - "traefik.http.routers.terraria.rule=Host(`terraria.c3r5b8.dev`)"
       - "traefik.http.services.terraria.loadbalancer.server.port=7777"
     environment:
-      - world="Undiscovered Alcove"
+      - world="wrld.wld"
     volumes:
       - ./services/terraria/config:/config
     tty: true
