@@ -182,6 +182,10 @@ services:
       - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
     restart: unless-stopped
 
+  #
+  # games
+  #
+
   factorio:
     image: factoriotools/factorio:stable
     container_name: factorio
@@ -194,7 +198,21 @@ services:
     volumes:
       - ./services/factorio:/factorio
     restart: unless-stopped
-
+    terraria:
+      image: ghcr.io/beardedio/terraria:latest
+      # ports:
+        # - '7777:7777'
+      restart: unless-stopped
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.terraria.rule=Host(`terraria.c3r5b8.dev`)"
+        - "traefik.http.services.terraria.loadbalancer.server.port=7777"
+      environment:
+        - world=wrld
+      volumes:
+        - ./services/terraria/config:/config
+      tty: true
+      stdin_open: true
   #
   # immich
   #
