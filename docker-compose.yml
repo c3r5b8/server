@@ -222,15 +222,15 @@ services:
       - '7777:7777'
     restart: unless-stopped
     environment:
-      - world=/config/wrld.wld
+      - world=wrld.wld
     volumes:
       - ./services/terraria/config:/config
     tty: true
     stdin_open: true
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.terraria-server.rule=Host(`terraria.c3r5b8.dev`)"
-      - "traefik.http.services.terraria-server.loadbalancer.server.port=7777"
+      - "traefik.http.routers.terraria.rule=Host(`terraria.c3r5b8.dev`)"
+      - "traefik.http.services.terraria.loadbalancer.server.port=7777"
   #
   # immich
   #
