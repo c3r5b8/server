@@ -203,8 +203,12 @@ services:
     restart: unless-stopped
     stdin_open: true
     tty: true
-    ports:
-      - 7777:7777
+    # ports:
+    #   - 7777:7777
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.terraria-server.rule=Host(`terraria.c3r5b8.dev`)"
+      - "traefik.http.services.terraria-server.loadbalancer.server.port=7777"
     volumes:
       - ./services/terraria/worlds:/root/.local/share/Terraria/Worlds
     environment:
