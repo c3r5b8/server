@@ -216,7 +216,7 @@ services:
       - maxplayers=128
       - port=7777
       - password=${TERRARIA_PASSWORD}
-      - motd="Welcome to server! :)"
+      # - motd="Welcome to server! :)"
   #
   # immich
   #
