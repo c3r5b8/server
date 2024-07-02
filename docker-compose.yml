@@ -138,6 +138,21 @@ services:
       - DASHDOT_SHOW_HOST=true
       - DASHDOT_CUSTOM_HOST=sargas
 
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - ./services/homeassistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homeassistant.rule=Host(`home.c3r5b8.dev`)"
+      - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
+    privileged: true
+    network_mode: host
+
   couchdb:
     image: couchdb
     container_name: obsidian-livesync
