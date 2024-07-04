@@ -115,7 +115,7 @@ services:
     image: ghcr.io/ajnart/homarr:latest
     restart: unless-stopped
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - /var/run/docker.sock:/var/run/docker.sock
       - ./services/homarr/configs:/app/data/configs
       - ./services/homarr/icons:/app/public/icons
       - ./services/homarr/data:/data
@@ -187,6 +187,44 @@ services:
       - 22000:22000/tcp
       - 22000:22000/udp
       - 21027:21027/udp
+    restart: unless-stopped
+
+  #
+  # matrix
+  #
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./services/synapse/db:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  synapse:
+    image: matrixdotorg/synapse:latest
+    environment:
+      SYNAPSE_SERVER_NAME: ${SYNAPSE_SERVER_NAME}
+      SYNAPSE_REPORT_STATS: ${SYNAPSE_REPORT_STATS}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
+    volumes:
+      - ./services/synapse/data:/data
+      - /mnt/fat_ssd/synapse/uploads:/data/uploads
+      - /mnt/fat_ssd/synapse/media:/data/media
+    depends_on:
+      - postgres
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.synapse-client.rule=Host(`${SYNAPSE_SERVER_NAME}`) && PathPrefix(`/_matrix`, `/_synapse/client`)"
+      - "traefik.http.routers.synapse-client.entrypoints=websecure"
+      - "traefik.http.routers.synapse-client.tls.certresolver=letsencrypt"
+      - "traefik.http.middlewares.synapse-client-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.synapse-federation.rule=Host(`example.com`)"
+      - "traefik.http.routers.synapse-federation.entrypoints=matrix_federation"
+      - "traefik.http.routers.synapse-federation.tls.certresolver=letsencrypt"
     restart: unless-stopped
 
   #
