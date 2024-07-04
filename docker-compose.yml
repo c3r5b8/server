@@ -193,6 +193,13 @@ services:
   # matrix
   #
 
+  mautrix-telegram:
+    container_name: mautrix-telegram
+    image: dock.mau.dev/mautrix/telegram:<version>
+    restart: unless-stopped
+    volumes:
+    - ./services/synapse/mautrix-telegram:/data
+
   postgres:
     image: postgres:13
     environment:
