@@ -195,7 +195,7 @@ services:
 
   mautrix-telegram:
     container_name: mautrix-telegram
-    image: dock.mau.dev/mautrix/telegram:<version>
+    image: dock.mau.dev/mautrix/telegram:latest
     restart: unless-stopped
     volumes:
     - ./services/synapse/mautrix-telegram:/data
