@@ -193,8 +193,8 @@ services:
   # matrix
   #
 
-  mautrix-telegram:
-    container_name: mautrix-telegram
+  mautrixbridge:
+    container_name: mautrixbridge
     image: dock.mau.dev/mautrix/telegram:latest
     restart: unless-stopped
     volumes:
