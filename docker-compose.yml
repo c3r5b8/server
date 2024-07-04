@@ -199,6 +199,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_INITDB_ARGS: --encoding=UTF-8 --lc-collate=C --lc-ctype=C
     volumes:
       - ./services/synapse/db:/var/lib/postgresql/data
     restart: unless-stopped
@@ -224,21 +225,8 @@ services:
       - "traefik.http.middlewares.matrix-headers.headers.customrequestheaders.X-Forwarded-For=X-Real-IP"
       - "traefik.http.middlewares.matrix-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
       - "traefik.http.middlewares.matrix-headers.headers.customrequestheaders.Host=matrix.c3r5b8.dev"
-      - "traefik.http.middlewares.matrix-body-size.buffering.maxRequestBodyBytes=52428800" # 50M in bytes
+      - "traefik.http.middlewares.matrix-body-size.buffering.maxRequestBodyBytes=52428800"
       - "traefik.http.routers.matrix.middlewares=matrix-headers,matrix-body-size"
-
-      # - traefik.enable=true
-      # - traefik.http.routers.http-synapse.entryPoints=http
-      # - traefik.http.routers.http-synapse.rule=Host(`my.matrix.host`)
-      # - traefik.http.middlewares.https_redirect.redirectscheme.scheme=https
-      # - traefik.http.middlewares.https_redirect.redirectscheme.permanent=true
-      # - traefik.http.routers.http-synapse.middlewares=https_redirect
-      # - traefik.http.routers.https-synapse.entryPoints=https
-      # - traefik.http.routers.https-synapse.rule=Host(`my.matrix.host`)
-      # - traefik.http.routers.https-synapse.service=synapse
-      # - traefik.http.routers.https-synapse.tls=true
-      # - traefik.http.services.synapse.loadbalancer.server.port=8008
-      # # - traefik.http.routers.https-synapse.tls.certResolver=le-ssl
     restart: unless-stopped
 
   #
