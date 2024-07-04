@@ -195,6 +195,7 @@ services:
 
   mautrixbridge:
     container_name: mautrixbridge
+    hostname: mautrixbridge
     image: dock.mau.dev/mautrix/telegram:latest
     restart: unless-stopped
     volumes:
@@ -202,6 +203,7 @@ services:
 
   postgres:
     image: postgres:13
+    hostname: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -213,6 +215,7 @@ services:
 
   synapse:
     image: matrixdotorg/synapse:latest
+    hostname: synapse
     environment:
       SYNAPSE_SERVER_NAME: ${SYNAPSE_SERVER_NAME}
       SYNAPSE_REPORT_STATS: ${SYNAPSE_REPORT_STATS}
