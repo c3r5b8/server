@@ -218,13 +218,27 @@ services:
       - postgres
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.synapse-client.rule=Host(`${SYNAPSE_SERVER_NAME}`) && PathPrefix(`/_matrix`, `/_synapse/client`)"
-      - "traefik.http.routers.synapse-client.entrypoints=websecure"
-      - "traefik.http.routers.synapse-client.tls.certresolver=letsencrypt"
-      - "traefik.http.middlewares.synapse-client-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
-      - "traefik.http.routers.synapse-federation.rule=Host(`example.com`)"
-      - "traefik.http.routers.synapse-federation.entrypoints=matrix_federation"
-      - "traefik.http.routers.synapse-federation.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.matrix.rule=Host(`matrix.c3r5b8.dev`)"
+      - "traefik.http.routers.matrix.entrypoints=websecure"
+      - "traefik.http.services.matrix.loadbalancer.server.port=8008"
+      - "traefik.http.middlewares.matrix-headers.headers.customrequestheaders.X-Forwarded-For=X-Real-IP"
+      - "traefik.http.middlewares.matrix-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.middlewares.matrix-headers.headers.customrequestheaders.Host=matrix.c3r5b8.dev"
+      - "traefik.http.middlewares.matrix-body-size.buffering.maxRequestBodyBytes=52428800" # 50M in bytes
+      - "traefik.http.routers.matrix.middlewares=matrix-headers,matrix-body-size"
+
+      # - traefik.enable=true
+      # - traefik.http.routers.http-synapse.entryPoints=http
+      # - traefik.http.routers.http-synapse.rule=Host(`my.matrix.host`)
+      # - traefik.http.middlewares.https_redirect.redirectscheme.scheme=https
+      # - traefik.http.middlewares.https_redirect.redirectscheme.permanent=true
+      # - traefik.http.routers.http-synapse.middlewares=https_redirect
+      # - traefik.http.routers.https-synapse.entryPoints=https
+      # - traefik.http.routers.https-synapse.rule=Host(`my.matrix.host`)
+      # - traefik.http.routers.https-synapse.service=synapse
+      # - traefik.http.routers.https-synapse.tls=true
+      # - traefik.http.services.synapse.loadbalancer.server.port=8008
+      # # - traefik.http.routers.https-synapse.tls.certResolver=le-ssl
     restart: unless-stopped
 
   #
