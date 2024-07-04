@@ -225,6 +225,7 @@ services:
       SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
     volumes:
       - ./services/synapse/data:/data
+      - ./services/synapse/mautrix-telegram/registration.yaml:/data/telegram.yaml
       - /mnt/fat_ssd/synapse/uploads:/data/uploads
       - /mnt/fat_ssd/synapse/media:/data/media
     depends_on:
