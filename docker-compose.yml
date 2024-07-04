@@ -204,6 +204,7 @@ services:
   postgres:
     image: postgres:13
     hostname: postgres
+    container_name: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -216,6 +217,7 @@ services:
   synapse:
     image: matrixdotorg/synapse:latest
     hostname: synapse
+    container_name: synapse
     environment:
       SYNAPSE_SERVER_NAME: ${SYNAPSE_SERVER_NAME}
       SYNAPSE_REPORT_STATS: ${SYNAPSE_REPORT_STATS}
