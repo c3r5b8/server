@@ -189,6 +189,19 @@ services:
       - 21027:21027/udp
     restart: unless-stopped
 
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    restart: unless-stopped
+    # ports:
+    #  - '3000:3000'
+    volumes:
+      - ./services/grafana:/var/lib/grafana
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.c3r5b8.dev`)"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+
   #
   # matrix
   #
