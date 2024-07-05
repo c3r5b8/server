@@ -202,6 +202,19 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`grafana.c3r5b8.dev`)"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+  
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./services/prometheus:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.c3r5b8.dev`)"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
 
   #
   # matrix
