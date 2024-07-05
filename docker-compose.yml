@@ -197,6 +197,7 @@ services:
     #  - '3000:3000'
     volumes:
       - ./services/grafana:/var/lib/grafana
+    user: '1000'
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`grafana.c3r5b8.dev`)"
