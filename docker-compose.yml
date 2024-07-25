@@ -2,6 +2,7 @@
 services:
   traefik:
     image: traefik
+    container_name: traefik
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
@@ -98,6 +99,7 @@ services:
 
   watchtower:
     image: containrrr/watchtower
+    container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
@@ -118,6 +120,7 @@ services:
 
   maloja:
     image: "krateng/maloja:latest"
+    container_name: maloja
     volumes:
       - ./services/maloja:/data
     environment:
@@ -145,6 +148,7 @@ services:
   dash:
     image: mauricenino/dashdot:latest
     restart: unless-stopped
+    container_name: dash
     privileged: true
     labels:
       - "traefik.enable=true"
@@ -250,6 +254,16 @@ services:
       - "traefik.http.routers.dozzle.rule=Host(`dozzle.c3r5b8.dev`)"
     environment:
       DOZZLE_AUTH_PROVIDER: simple
+  gotify:
+    image: gotify/server
+    container_name: gotify
+    restart: unless-stopped
+    volumes:
+      - ./services/gotify:/app/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gotify.rule=Host(`dozzle.c3r5b8.dev`)"
+      - "traefik.http.services.gotify.loadbalancer.server.port=80"
   #
   # games
   #
@@ -267,6 +281,7 @@ services:
       - ./services/factorio:/factorio
     restart: unless-stopped
   terraria:
+    container_name: terraria
     image: ghcr.io/beardedio/terraria:latest
     ports:
       - '7777:7777'
