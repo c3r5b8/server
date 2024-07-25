@@ -208,6 +208,9 @@ services:
       - 21027:21027/udp
     restart: unless-stopped
 
+#
+# monitoring
+#
   grafana:
     image: grafana/grafana-enterprise
     container_name: grafana
@@ -235,6 +238,18 @@ services:
       - "traefik.http.routers.prometheus.rule=Host(`prometheus.c3r5b8.dev`)"
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
 
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./services/dozzle:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dozzle.rule=Host(`dozzle.c3r5b8.dev`)"
+    environment:
+      DOZZLE_AUTH_PROVIDER: simple
   #
   # games
   #
