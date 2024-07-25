@@ -262,7 +262,7 @@ services:
       - ./services/gotify:/app/data
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.gotify.rule=Host(`dozzle.c3r5b8.dev`)"
+      - "traefik.http.routers.gotify.rule=Host(`gotify.c3r5b8.dev`)"
       - "traefik.http.services.gotify.loadbalancer.server.port=80"
   #
   # games
