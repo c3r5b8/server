@@ -102,7 +102,7 @@ services:
     container_name: watchtower
     environment:
       - WATCHTOWER_NOTIFICATIONS=gotify
-      - WATCHTOWER_NOTIFICATION_GOTIFY_URL=http://gotify.c3r5b8.dev
+      - WATCHTOWER_NOTIFICATION_GOTIFY_URL=https://gotify.c3r5b8.dev
       - WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN=${WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
