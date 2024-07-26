@@ -180,6 +180,25 @@ services:
     privileged: true
     network_mode: host
 
+  memos:
+    image: neosmemo/memos:stable
+    container_name: memos
+    volumes:
+      - ./services/memos/data:/var/opt/memos
+    depends_on:
+      - memos_db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.memos.rule=Host(`memo.c3r5b8.dev`)"
+      - "traefik.http.services.memos.loadbalancer.server.port=5230"
+  
+  memos_db:
+    image: postgres:16.1
+    container_name: memos_db
+    restart: unless-stopped
+    volumes:
+      - ./services/memos/database:/var/lib/postgresql/data/
+
   couchdb:
     image: couchdb
     container_name: obsidian-livesync
