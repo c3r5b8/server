@@ -172,6 +172,23 @@ services:
       - "traefik.http.routers.lidarr.rule=Host(`lidarr.c3r5b8.dev`)"
       - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
     restart: unless-stopped   
+    
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=Europe/Kyiv
+      - PORT=5055 #optional
+    # ports:
+    #   - 5055:5055
+    volumes:
+      - ./services/jellyseerr:/app/config
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.c3r5b8.dev`)"
+      - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
 
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:latest
