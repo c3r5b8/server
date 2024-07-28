@@ -184,6 +184,8 @@ services:
       - TZ=Etc/Kyiv
     volumes:
       - ./services/lidarr/config:/config
+      - ./services/lidarr/services:/custom-services.d
+      - ./services/lidarr/cont:/custom-cont-init.d
       - /mnt/fat_ssd/media/music:/music #optional
       - /mnt/fat_ssd/media/complete:/data/downloads #optional
     # ports:
