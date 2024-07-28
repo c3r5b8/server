@@ -126,7 +126,7 @@ services:
     volumes:
       - ./services/sonarr/data:/config
       - /mnt/fat_ssd/media/tv:/tv #optional
-      - /mnt/fat_ssd/media/tv:/downloads #optional
+      - /mnt/fat_ssd/media/tv:/data/downloads #optional
     # ports:
     #   - 8989:8989
     restart: unless-stopped
@@ -145,7 +145,7 @@ services:
     volumes:
       - ./services/radarr/data:/config
       - /mnt/fat_ssd/media/movies:/movies #optional
-      - /mnt/fat_ssd/media/movies:/downloads #optional
+      - /mnt/fat_ssd/media/movies:/data/downloads #optional
     # ports:
     #   - 7878:7878
     restart: unless-stopped
@@ -164,7 +164,7 @@ services:
     volumes:
       - ./services/lidarr/config:/config
       - /mnt/fat_ssd/media/music:/music #optional
-      - /mnt/fat_ssd/media/music:/downloads #optional
+      - /mnt/fat_ssd/media/music:/data/downloads #optional
     # ports:
     #   - 8686:8686
     labels:
