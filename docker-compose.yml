@@ -85,21 +85,42 @@ services:
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
     restart: unless-stopped
 
-  prowlarr:
-    image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
+  # prowlarr:
+  #   image: lscr.io/linuxserver/prowlarr:latest
+  #   container_name: prowlarr
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Etc/Kyiv
+  #   volumes:
+  #     - ./services/prowlarr/data:/config
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.c3r5b8.dev`)"
+  #     - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+  #   restart: unless-stopped
+
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/Kyiv
+      - AUTO_UPDATE=true #optional
+      - RUN_OPTS= #optional
     volumes:
-      - ./services/prowlarr/data:/config
+      - ./services/jackett/data:/config
+      - /mnt/fat_ssd/media/complete:/downloads
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.c3r5b8.dev`)"
-      - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
-    restart: unless-stopped
+      - "traefik.http.routers.jackett.rule=Host(`jackett.c3r5b8.dev`)"
+      - "traefik.http.services.jackett.loadbalancer.server.port=9117"
 
+    # ports:
+    #   - 9117:9117
+    restart: unless-stopped
+    
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
