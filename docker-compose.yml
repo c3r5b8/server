@@ -47,7 +47,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/Kyiv
+      - TZ=Europe/Kyiv
       - USER=c3r5b8
       - PASS=${TRANSMISSION_PASS}
     volumes:
@@ -72,7 +72,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/Kyiv
+      - TZ=Europe/Kyiv
       - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
     volumes:
       - ./services/jellyfin:/config
@@ -91,7 +91,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/Kyiv
+      - TZ=Europe/Kyiv
     volumes:
       - ./services/prowlarr/data:/config
     labels:
@@ -106,7 +106,7 @@ services:
   #   environment:
   #     - PUID=1000
   #     - PGID=1000
-  #     - TZ=Etc/Kyiv
+  #     - TZ=Europe/Kyiv
   #     - AUTO_UPDATE=true #optional
   #     - RUN_OPTS= #optional
   #   volumes:
@@ -143,7 +143,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/Kyiv
+      - TZ=Europe/Kyiv
     volumes:
       - ./services/sonarr/data:/config
       - /mnt/fat_ssd/media/tv:/tv #optional
@@ -162,7 +162,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/Kyiv
+      - TZ=Europe/Kyiv
     volumes:
       - ./services/radarr/data:/config
       - /mnt/fat_ssd/media/movies:/movies #optional
@@ -181,7 +181,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/Kyiv
+      - TZ=Europe/Kyiv
     volumes:
       - ./services/lidarr/config:/config
       - ./services/lidarr/services:/custom-services.d
@@ -202,7 +202,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/Kyiv
+      - TZ=Europe/Kyiv
     volumes:
       - ./services/headphones/config:/config
       - /mnt/fat_ssd/media/complete:/downloads #optional
@@ -238,7 +238,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/Kyiv
+      - TZ=Europe/Kyiv
     volumes:
       - ./services/nextcloud:/config
       - /mnt/fat_ssd/nextcloud:/data
