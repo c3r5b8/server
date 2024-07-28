@@ -195,25 +195,6 @@ services:
       - "traefik.http.routers.lidarr.rule=Host(`lidarr.c3r5b8.dev`)"
       - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
     restart: unless-stopped   
-    
-  headphones:
-    image: lscr.io/linuxserver/headphones:latest
-    container_name: headphones
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Kyiv
-    volumes:
-      - ./services/headphones/config:/config
-      - /mnt/fat_ssd/media/complete:/downloads #optional
-      - /mnt/fat_ssd/media/music:/music #optional
-    # ports:
-    #   - 8181:8181
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.headphones.rule=Host(`headphones.c3r5b8.dev`)"
-      - "traefik.http.services.headphones.loadbalancer.server.port=8181"
-    restart: unless-stopped
 
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
