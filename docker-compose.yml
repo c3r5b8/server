@@ -175,26 +175,26 @@ services:
       - "traefik.http.routers.radarr.rule=Host(`radarr.c3r5b8.dev`)"
       - "traefik.http.services.radarr.loadbalancer.server.port=7878"
 
-  lidarr:
-    image: lscr.io/linuxserver/lidarr:latest
-    container_name: lidarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Kyiv
-    volumes:
-      - ./services/lidarr/config:/config
-      - ./services/lidarr/services:/custom-services.d
-      - ./services/lidarr/cont:/custom-cont-init.d
-      - /mnt/fat_ssd/media/music:/music #optional
-      - /mnt/fat_ssd/media/complete:/data/downloads #optional
-    # ports:
-    #   - 8686:8686
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.lidarr.rule=Host(`lidarr.c3r5b8.dev`)"
-      - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
-    restart: unless-stopped   
+  # lidarr:
+  #   image: lscr.io/linuxserver/lidarr:latest
+  #   container_name: lidarr
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Europe/Kyiv
+  #   volumes:
+  #     - ./services/lidarr/config:/config
+  #     # - ./services/lidarr/services:/custom-services.d
+  #     # - ./services/lidarr/cont:/custom-cont-init.d
+  #     - /mnt/fat_ssd/media/music:/music #optional
+  #     - /mnt/fat_ssd/media/complete:/data/downloads #optional
+  #   # ports:
+  #   #   - 8686:8686
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.lidarr.rule=Host(`lidarr.c3r5b8.dev`)"
+  #     - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
+  #   restart: unless-stopped   
 
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
