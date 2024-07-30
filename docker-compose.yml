@@ -64,7 +64,6 @@ services:
 
 #
 # media
-#
 
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
@@ -100,27 +99,6 @@ services:
       - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
     restart: unless-stopped
 
-  # jackett:
-  #   image: lscr.io/linuxserver/jackett:latest
-  #   container_name: jackett
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=Europe/Kyiv
-  #     - AUTO_UPDATE=true #optional
-  #     - RUN_OPTS= #optional
-  #   volumes:
-  #     - ./services/jackett/data:/config
-  #     - /mnt/fat_ssd/media/complete:/downloads
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.jackett.rule=Host(`jackett.c3r5b8.dev`)"
-  #     - "traefik.http.services.jackett.loadbalancer.server.port=9117"
-  #
-  #   # ports:
-  #   #   - 9117:9117
-  #   restart: unless-stopped
-    
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
@@ -129,8 +107,6 @@ services:
       - LOG_HTML=${LOG_HTML:-false}
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
       - TZ=Europe/Kyiv
-    # ports:
-    #   - "${PORT:-8191}:8191"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.c3r5b8.dev`)"
@@ -146,10 +122,8 @@ services:
       - TZ=Europe/Kyiv
     volumes:
       - ./services/sonarr/data:/config
-      - /mnt/fat_ssd/media/tv:/tv #optional
-      - /mnt/fat_ssd/media/complete:/data/downloads #optional
-    # ports:
-    #   - 8989:8989
+      - /mnt/fat_ssd/media/tv:/tv
+      - /mnt/fat_ssd/media/complete:/data/downloads
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -165,54 +139,13 @@ services:
       - TZ=Europe/Kyiv
     volumes:
       - ./services/radarr/data:/config
-      - /mnt/fat_ssd/media/movies:/movies #optional
-      - /mnt/fat_ssd/media/complete:/data/downloads #optional
-    # ports:
-    #   - 7878:7878
+      - /mnt/fat_ssd/media/movies:/movies
+      - /mnt/fat_ssd/media/complete:/data/downloads
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.radarr.rule=Host(`radarr.c3r5b8.dev`)"
       - "traefik.http.services.radarr.loadbalancer.server.port=7878"
-
-  metatube:
-      container_name: metatube
-      restart: always
-      image: jvt038/metatube:latest
-      # ports:
-      #     - '5000:5000'
-      environment:
-          - PORT=5000
-          - HOST=0.0.0.0
-      volumes:
-          - '/mnt/fat_ssd/media/music:/downloads:rw'
-          - './services/metatube/database:/database:rw'
-          - './services/metatube/migrations:/config/migrations:rw'      
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.metatube.rule=Host(`metatube.c3r5b8.dev`)"
-        - "traefik.http.services.metatube.loadbalancer.server.port=5000"
-      
-  # lidarr:
-  #   image: lscr.io/linuxserver/lidarr:latest
-  #   container_name: lidarr
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=Europe/Kyiv
-  #   volumes:
-  #     - ./services/lidarr/config:/config
-  #     # - ./services/lidarr/services:/custom-services.d
-  #     # - ./services/lidarr/cont:/custom-cont-init.d
-  #     - /mnt/fat_ssd/media/music:/music #optional
-  #     - /mnt/fat_ssd/media/complete:/data/downloads #optional
-  #   # ports:
-  #   #   - 8686:8686
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.lidarr.rule=Host(`lidarr.c3r5b8.dev`)"
-  #     - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
-  #   restart: unless-stopped   
 
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
@@ -220,9 +153,7 @@ services:
     environment:
       - LOG_LEVEL=debug
       - TZ=Europe/Kyiv
-      - PORT=5055 #optional
-    # ports:
-    #   - 5055:5055
+      - PORT=5055
     volumes:
       - ./services/jellyseerr:/app/config
     restart: unless-stopped
@@ -394,13 +325,11 @@ services:
 
 #
 # monitoring
-#
+
   grafana:
     image: grafana/grafana-enterprise
     container_name: grafana
     restart: unless-stopped
-    # ports:
-    #  - '3000:3000'
     volumes:
       - ./services/grafana:/var/lib/grafana
     user: '1000'
@@ -444,9 +373,9 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.gotify.rule=Host(`gotify.c3r5b8.dev`)"
       - "traefik.http.services.gotify.loadbalancer.server.port=80"
-  #
-  # games
-  #
+      
+#
+# games
 
   factorio:
     image: factoriotools/factorio:stable
@@ -476,9 +405,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.terraria.rule=Host(`terraria.c3r5b8.dev`)"
       - "traefik.http.services.terraria.loadbalancer.server.port=7777"
-  #
-  # immich
-  #
+  
+#
+# immich
+  
   immich-server:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
@@ -556,9 +486,6 @@ services:
         "-c",
         "wal_compression=on"
       ]
-#
-# immich end
-#
 
 volumes:
   model-cache:
