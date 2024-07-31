@@ -313,7 +313,7 @@ services:
       - POSTGRES_PASSWORD=${HAKA_POSTGRES_PASSWORD}
       - POSTGRES_DB=${HAKA_POSTGRES_DB}
     volumes:
-      - deploy_db_data:/var/lib/postgresql/data
+      - ./services/haka:/var/lib/postgresql/data
 
   memos:
     image: neosmemo/memos:stable
