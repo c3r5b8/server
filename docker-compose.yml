@@ -58,7 +58,7 @@ services:
       - 6881:6881/udp
       - 58846:58846
     restart: unless-stopped
-        labels:
+    labels:
       - "traefik.enable=true"
       - "traefik.http.routers.deluge.rule=Host(`deluge.c3r5b8.dev`)"
       - "traefik.http.services.deluge.loadbalancer.server.port=8112"
