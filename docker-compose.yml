@@ -41,26 +41,28 @@ services:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
 
-  transmission:
-    image: lscr.io/linuxserver/transmission:latest
-    container_name: transmission
+  deluge:
+    image: lscr.io/linuxserver/deluge:latest
+    container_name: deluge
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/Kyiv
-      - USER=c3r5b8
-      - PASS=${TRANSMISSION_PASS}
+      - TZ=Etc/Kyiv
+      - DELUGE_LOGLEVEL=error
     volumes:
-      - ./services/transmission:/config
-      - /mnt/fat_ssd/media/complete:/data/downloads
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.transmission.rule=Host(`transmission.c3r5b8.dev`)"
-      - "traefik.http.services.transmission.loadbalancer.server.port=9091"
+      - ./services/deluge/config:/config
+      - /mnt/fat_ssd/media:/downloads
     ports:
-      - 51413:51413
-      - 51413:51413/udp
+      # - 8112:8112
+      - 6881:6881
+      - 6881:6881/udp
+      - 58846:58846
     restart: unless-stopped
+        labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.deluge.rule=Host(`deluge.c3r5b8.dev`)"
+      - "traefik.http.services.deluge.loadbalancer.server.port=8112"
+
 
 #
 # media
@@ -83,84 +85,6 @@ services:
       - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.c3r5b8.dev`)"
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
     restart: unless-stopped
-
-  prowlarr:
-    image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Kyiv
-    volumes:
-      - ./services/prowlarr/data:/config
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.c3r5b8.dev`)"
-      - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
-    restart: unless-stopped
-
-  flaresolverr:
-    image: ghcr.io/flaresolverr/flaresolverr:latest
-    container_name: flaresolverr
-    environment:
-      - LOG_LEVEL=${LOG_LEVEL:-info}
-      - LOG_HTML=${LOG_HTML:-false}
-      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
-      - TZ=Europe/Kyiv
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.flaresolverr.rule=Host(`flaresolverr.c3r5b8.dev`)"
-      - "traefik.http.services.flaresolverr.loadbalancer.server.port=8191"
-    restart: unless-stopped
-
-  sonarr:
-    image: lscr.io/linuxserver/sonarr:latest
-    container_name: sonarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Kyiv
-    volumes:
-      - ./services/sonarr/data:/config
-      - /mnt/fat_ssd/media/tv:/tv
-      - /mnt/fat_ssd/media/complete:/data/downloads
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.sonarr.rule=Host(`sonarr.c3r5b8.dev`)"
-      - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
-    
-  radarr:
-    image: lscr.io/linuxserver/radarr:latest
-    container_name: radarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Kyiv
-    volumes:
-      - ./services/radarr/data:/config
-      - /mnt/fat_ssd/media/movies:/movies
-      - /mnt/fat_ssd/media/complete:/data/downloads
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.radarr.rule=Host(`radarr.c3r5b8.dev`)"
-      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
-
-  jellyseerr:
-    image: fallenbagel/jellyseerr:latest
-    container_name: jellyseerr
-    environment:
-      - LOG_LEVEL=debug
-      - TZ=Europe/Kyiv
-      - PORT=5055
-    volumes:
-      - ./services/jellyseerr:/app/config
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.c3r5b8.dev`)"
-      - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
 
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:latest
