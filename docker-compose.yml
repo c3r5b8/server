@@ -186,44 +186,17 @@ services:
     privileged: true
     network_mode: host
 
-  haka:
-    container_name: hakatime
-    image: mujx/hakatime:v1.7.3
-    restart: unless-stopped
-    depends_on:
-      - haka_db
+  wakapi:
+    image: ghcr.io/muety/wakapi:latest
+    container_name: wakapi
     environment:
-      - HAKA_DB_HOST=haka_db
-      - HAKA_DB_PORT=5432
-      - HAKA_DB_NAME=${HAKA_POSTGRES_USER}
-      - HAKA_DB_PASS=${HAKA_POSTGRES_PASSWORD}
-      - HAKA_DB_USER=${HAKA_POSTGRES_DB}
-      - HAKA_API_PREFIX="haka.c3r5b8.dev"
-      - HAKA_BADGE_URL="https://haka.c3r5b8.dev"
-      - HAKA_PORT=8080
-      - HAKA_SHIELDS_IO_URL="https://img.shields.io"
-      - HAKA_ENABLE_REGISTRATION="true"
-      - HAKA_SESSION_EXPIRY="72"
-      - HAKA_LOG_LEVEL="info"
-      - HAKA_ENV="dev"
-      - HAKA_HTTP_LOG="true"
-      - GITHUB_TOKEN="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"
+      - WAKAPI_PASSWORD_SALT=${WAKAPI_PASSWORD_SALT}
+    volumes:
+      - ./services/wakapi:/data 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.haka.rule=Host(`haka.c3r5b8.dev`)"
-      - "traefik.http.services.haka.loadbalancer.server.port=8080"
-    
-
-  haka_db:
-    container_name: haka_db
-    image: postgres:12-alpine
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=${HAKA_POSTGRES_USER}
-      - POSTGRES_PASSWORD=${HAKA_POSTGRES_PASSWORD}
-      - POSTGRES_DB=${HAKA_POSTGRES_DB}
-    volumes:
-      - ./services/haka:/var/lib/postgresql/data
+      - "traefik.http.routers.wakapi.rule=Host(`wakapi.c3r5b8.dev`)"
+      - "traefik.http.services.wakapi.loadbalancer.server.port=3000"
 
   memos:
     image: neosmemo/memos:stable
