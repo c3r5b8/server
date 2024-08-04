@@ -191,6 +191,7 @@ services:
     container_name: wakapi
     restart: unless-stopped
     environment:
+      - WAKAPI_PUBLIC_URL=https://wakapi.c3r5b8.dev
       - WAKAPI_PASSWORD_SALT=${WAKAPI_PASSWORD_SALT}
     volumes:
       - ./services/wakapi:/data 
