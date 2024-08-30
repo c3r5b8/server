@@ -126,14 +126,6 @@ services:
     environment:
       - DOMAIN=https://pass.c3r5b8.dev
       - WEBSOCKET_ENABLED=true
-  whoogle:
-    image: benbusby/whoogle-search:latest
-    container_name: whoogle
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoogle.rule=Host(`googl.c3r5b8.dev`)"
-      - "traefik.http.services.services.loadbalancer.server.port=5000"
 
   maloja:
     image: "krateng/maloja:latest"
