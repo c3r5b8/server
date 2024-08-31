@@ -356,9 +356,9 @@ services:
       - ~/flowy/migrations/before:/docker-entrypoint-initdb.d
       - ./services/appflowy/postgres_data:/var/lib/postgresql/data
 
-  redis:
-    restart: on-failure
-    image: redis
+  # redis:
+  #   restart: on-failure
+  #   image: redis
 
   gotrue:
     restart: on-failure
