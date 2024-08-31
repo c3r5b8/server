@@ -327,7 +327,7 @@ services:
       - /home/c3r5b8/flowy/nginx/ssl/private_key.key:/etc/nginx/ssl/private_key.key
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx.rule=Host(`flow.c3r5b8.dev`)"
+      - "traefik.http.routers.nginx.rule=Host(`flowy.c3r5b8.dev`)"
       - "traefik.http.services.nginx.loadbalancer.server.port=80"
 
   # You do not need this if you have configured to use your own s3 file storage
