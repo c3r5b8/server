@@ -322,9 +322,9 @@ services:
     #   - 80:80   # Disable this if you are using TLS
     #   - 443:443
     volumes:
-      - ~/flowy/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ~/flowy/nginx/ssl/certificate.crt:/etc/nginx/ssl/certificate.crt
-      - ~/flowy/nginx/ssl/private_key.key:/etc/nginx/ssl/private_key.key
+      - /home/c3r5b8/flowy/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /home/c3r5b8/flowy/nginx/ssl/certificate.crt:/etc/nginx/ssl/certificate.crt
+      - /home/c3r5b8/flowy/nginx/ssl/private_key.key:/etc/nginx/ssl/private_key.key
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.rule=Host(`flow.c3r5b8.dev`)"
@@ -345,7 +345,7 @@ services:
   postgres:
     restart: on-failure
     build:
-      context: ~/flowy/postgres
+      context: /home/c3r5b8/flowy/postgres
       dockerfile: postgres.Dockerfile
     environment:
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
@@ -353,7 +353,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
       - POSTGRES_HOST=${POSTGRES_HOST:-postgres}
     volumes:
-      - ~/flowy/migrations/before:/docker-entrypoint-initdb.d
+      - /home/c3r5b8/flowy/migrations/before:/docker-entrypoint-initdb.d
       - ./services/appflowy/postgres_data:/var/lib/postgresql/data
 
   # redis:
@@ -363,7 +363,7 @@ services:
   gotrue:
     restart: on-failure
     build:
-      context: ~/flowy
+      context: /home/c3r5b8/flowy
       dockerfile: docker/gotrue.Dockerfile
     image: appflowyinc/gotrue:${GOTRUE_VERSION:-latest}
     environment:
@@ -434,7 +434,7 @@ services:
       - APPFLOWY_AI_SERVER_PORT=${APPFLOWY_AI_SERVER_PORT}
       - APPFLOWY_OPENAI_API_KEY=${APPFLOWY_OPENAI_API_KEY}
     build:
-      context: ~/flowy
+      context: /home/c3r5b8/flowy
       dockerfile: Dockerfile
       args:
         FEATURES: ""
@@ -443,7 +443,7 @@ services:
   admin_frontend:
     restart: on-failure
     build:
-      context: ~/flowy
+      context: /home/c3r5b8/flowy
       dockerfile: ./admin_frontend/Dockerfile
     image: appflowyinc/admin_frontend:${APPFLOWY_ADMIN_FRONTEND_VERSION:-latest}
     environment:
@@ -464,7 +464,7 @@ services:
     restart: on-failure
     image: appflowyinc/appflowy_history:${APPFLOWY_HISTORY_VERSION:-latest}
     build:
-      context: ~/flowy
+      context: /home/c3r5b8/flowy
       dockerfile: ./services/appflowy-history/Dockerfile
     environment:
       - RUST_LOG=${RUST_LOG:-info}
