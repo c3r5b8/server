@@ -200,32 +200,32 @@ services:
       - "traefik.http.routers.wakapi.rule=Host(`wakapi.c3r5b8.dev`)"
       - "traefik.http.services.wakapi.loadbalancer.server.port=3000"
 
-  memos:
-    image: neosmemo/memos:stable
-    container_name: memos
-    restart: unless-stopped
-    volumes:
-      - ./services/memos/data:/var/opt/memos
-    depends_on:
-      - memos_db
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.memos.rule=Host(`memo.c3r5b8.dev`)"
-      - "traefik.http.services.memos.loadbalancer.server.port=5230"
-    environment:
-      - MEMOS_DRIVER=postgres
-      - MEMOS_DSN=${MEMOS_DSN}
-  
-  memos_db:
-    image: postgres:16.1
-    container_name: memos_db
-    restart: unless-stopped
-    volumes:
-      - ./services/memos/database:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+  # memos:
+  #   image: neosmemo/memos:stable
+  #   container_name: memos
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./services/memos/data:/var/opt/memos
+  #   depends_on:
+  #     - memos_db
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.memos.rule=Host(`memo.c3r5b8.dev`)"
+  #     - "traefik.http.services.memos.loadbalancer.server.port=5230"
+  #   environment:
+  #     - MEMOS_DRIVER=postgres
+  #     - MEMOS_DSN=${MEMOS_DSN}
+  #
+  # memos_db:
+  #   image: postgres:16.1
+  #   container_name: memos_db
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./services/memos/database:/var/lib/postgresql/data/
+  #   environment:
+  #     - POSTGRES_USER=${POSTGRES_USER}
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #     - POSTGRES_DB=${POSTGRES_DB}
 
   couchdb:
     image: couchdb
