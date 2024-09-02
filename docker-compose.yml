@@ -41,6 +41,71 @@ services:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
 
+  server:
+    image: standardnotes/server
+    container_name: server_self_hosted
+    restart: unless-stopped
+    # ports:
+    #   - 3000:3000
+    #   - 3125:3104
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USERNAME=${MYSQL_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_DATABASE=${MYSQL_DATABASE}
+      - DB_TYPE=mysql
+      - REDIS_PORT=6379
+      - REDIS_HOST=cache
+      - CACHE_TYPE=redis
+      - AUTH_JWT_SECRET=${AUTH_JWT_SECRET}
+      - AUTH_SERVER_ENCRYPTION_SERVER_KEY=${AUTH_SERVER_ENCRYPTION_SERVER_KEY}
+      - VALET_TOKEN_SECRET=${VALET_TOKEN_SECRET}
+    volumes:
+      - ./services/siple/logs:/var/lib/server/logs
+      - ./services/siple/uploads:/opt/server/packages/files/dist/uploads
+    labels:
+      - "traefik.http.routers.sm.rule=Host(`sm.c3r5b8.dev`)"
+      - "traefik.http.services.sm.loadbalancer.server.port=3000"
+      - "traefik.http.routers.smfiles.rule=Host(`smfiles.c3r5b8.dev`)"
+      - "traefik.http.services.smfiles.loadbalancer.server.port=3104"
+  localstack:
+    image: localstack/localstack:3.0
+    container_name: localstack_self_hosted
+    # expose:
+    #   - 4566
+    restart: unless-stopped
+    environment:
+      - SERVICES=sns,sqs
+      - HOSTNAME_EXTERNAL=localstack
+      - LS_LOG=warn
+    volumes:
+      - ./services/siple/localstack_bootstrap.sh:/etc/localstack/init/ready.d/localstack_bootstrap.sh
+
+  db:
+    image: mysql:8
+    container_name: db_self_hosted
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    # expose:
+    #   - 3306
+    restart: unless-stopped
+    volumes:
+      - ./services/siple/mysql:/var/lib/mysql
+      - ./services/siple/import:/docker-entrypoint-initdb.d
+
+  cache:
+    image: redis:6.0-alpine
+    container_name: cache_self_hosted
+    volumes:
+      - ./services/siple/redis/:/data
+    # expose:
+    #   - 6379
+    restart: unless-stopped
+
   deluge:
     image: lscr.io/linuxserver/deluge:latest
     container_name: deluge
