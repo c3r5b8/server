@@ -42,7 +42,7 @@ services:
     restart: unless-stopped
 
   server:
-    image: standardnotes/server
+    image: standardnotes/server:5c02435ee478b893747d3f9e41062aae12d7ff10
     container_name: server_self_hosted
     restart: unless-stopped
     # ports:
