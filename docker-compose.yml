@@ -65,11 +65,15 @@ services:
       - ./services/siple/logs:/var/lib/server/logs
       - ./services/siple/uploads:/opt/server/packages/files/dist/uploads
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.sm.rule=Host(`sm.c3r5b8.dev`)"
-      - "traefik.http.services.sm.loadbalancer.server.port=3000"
-      - "traefik.http.routers.smfiles.rule=Host(`smfiles.c3r5b8.dev`)"
-      - "traefik.http.services.smfiles.loadbalancer.server.port=3104"
+    - "traefik.enable=true"
+    - "traefik.http.routers.sm.rule=Host(`sm.c3r5b8.dev`)"
+    - "traefik.http.routers.sm.entrypoints=web"
+    - "traefik.http.routers.sm.service=sm"
+    - "traefik.http.services.sm.loadbalancer.server.port=3000"
+    - "traefik.http.routers.smfiles.rule=Host(`smfiles.c3r5b8.dev`)"
+    - "traefik.http.routers.smfiles.entrypoints=web"
+    - "traefik.http.routers.smfiles.service=smfiles"
+    - "traefik.http.services.smfiles.loadbalancer.server.port=3104"
   localstack:
     image: localstack/localstack:3.0
     container_name: localstack_self_hosted
