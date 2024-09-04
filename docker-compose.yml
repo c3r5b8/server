@@ -238,6 +238,7 @@ services:
 
   vikunja:
     image: vikunja/vikunja
+    container_name: vikunja
     environment:
       VIKUNJA_SERVICE_JWTSECRET: ${VIKUNJA_SERVICE_JWTSECRET}
       VIKUNJA_SERVICE_PUBLICURL: https://vikunja.c3r5b8.dev/
