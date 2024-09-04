@@ -236,6 +236,24 @@ services:
       - 21027:21027/udp
     restart: unless-stopped
 
+  vikunja:
+    image: vikunja/vikunja
+    environment:
+      VIKUNJA_SERVICE_JWTSECRET: ${VIKUNJA_SERVICE_JWTSECRET}
+      VIKUNJA_SERVICE_PUBLICURL: https://vikunja.c3r5b8.dev/
+      VIKUNJA_DATABASE_PATH: /db/vikunja.db
+  # ports:
+  #   - 3456:3456
+    volumes:
+      - ./services/vikunja/files:/app/vikunja/files
+      - ./services/vikunja/db:/db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vikunja.rule=Host(`vikunja.c3r5b8.dev`)"
+      - "traefik.http.services.vikunja.loadbalancer.server.port=3456"
+    restart: unless-stopped
+
+
 #
 # monitoring
 
