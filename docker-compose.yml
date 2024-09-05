@@ -28,10 +28,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`proxy.c3r5b8.dev`)"
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-      - "traefik.http.routers.openwrt.rule=Host(`openwrt.c3r5b8.dev`)"
-      - "traefik.http.routers.openwrt.service=openwrt"
-      - "traefik.http.services.openwrt.loadbalancer.server.url=192.168.1.1"
-      - "traefik.http.services.openwrt.loadbalancer.server.port=8443"
     ports:
       - "80:80"
       - "443:443"
