@@ -28,6 +28,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`proxy.c3r5b8.dev`)"
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+      - "traefik.http.routers.openwrt.rule=Host(`openwrt.c3r5b8.dev`)"
+      - "traefik.http.routers.openwrt.service=openwrt"
+      - "traefik.http.services.openwrt.loadbalancer.server.url=192.168.1.1"
+      - "traefik.http.services.openwrt.loadbalancer.server.port=8443"
     ports:
       - "80:80"
       - "443:443"
@@ -253,7 +257,14 @@ services:
       - "traefik.http.routers.vikunja.rule=Host(`vikunja.c3r5b8.dev`)"
       - "traefik.http.services.vikunja.loadbalancer.server.port=3456"
     restart: unless-stopped
-
+  super:
+    image: johannesjo/super-productivity:latest
+    container_name: super-productivity
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.super.rule=Host(`super.c3r5b8.dev`)"
+      - "traefik.http.services.super.loadbalancer.server.port=80"
+    restart: unless-stopped
 
 #
 # monitoring
