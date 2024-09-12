@@ -335,7 +335,7 @@ services:
       - '7777:7777'
     restart: unless-stopped
     environment:
-      - world=wrld2.wld
+      - world=idk.wld
     volumes:
       - ./services/terraria/config:/config
     tty: true
