@@ -62,16 +62,16 @@ services:
       - "traefik.http.routers.deluge.rule=Host(`deluge.c3r5b8.dev`)"
       - "traefik.http.services.deluge.loadbalancer.server.port=8112"
 
-    memos:
-      image: neosmemo/memos:stable
-      container_name: memos
-      restart: unless-stopped
-      volumes:
-        - ./services/memos/:/var/opt/memos
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.memos.rule=Host(`memo.c3r5b8.dev`)"
-        - "traefik.http.services.memos.loadbalancer.server.port=5230"
+  memos:
+    image: neosmemo/memos:stable
+    container_name: memos
+    restart: unless-stopped
+    volumes:
+      - ./services/memos/:/var/opt/memos
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.memos.rule=Host(`memo.c3r5b8.dev`)"
+      - "traefik.http.services.memos.loadbalancer.server.port=5230"
 
   #
   # media
