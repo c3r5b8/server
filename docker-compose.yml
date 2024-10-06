@@ -73,6 +73,21 @@ services:
       - "traefik.http.routers.memos.rule=Host(`memo.c3r5b8.dev`)"
       - "traefik.http.services.memos.loadbalancer.server.port=5230"
 
+  wyl:
+    image: aceberg/watchyourlan:v2
+    container_name: wyl
+    network_mode: "host"
+    restart: unless-stopped
+    volumes:
+      - ./services/wyl:/data/WatchYourLAN
+    environment:
+      TZ: Europe/Kyiv
+      IFACES: "eno1"
+      TIMEOUT: "30"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wyl.rule=Host(`wyl.c3r5b8.dev`)"
+      - "traefik.http.services.wyl.loadbalancer.server.port=8840"
   #
   # media
 
