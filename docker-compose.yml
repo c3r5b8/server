@@ -349,7 +349,6 @@ services:
   immich-server:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
-    command: [ 'start.sh', 'immich' ]
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
@@ -359,24 +358,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.immich-server.rule=Host(`immich.c3r5b8.dev`)"
-      - "traefik.http.services.immich-server.loadbalancer.server.port=3001"
+      - "traefik.http.services.immich-server.loadbalancer.server.port=2283"
 
-    depends_on:
-      - redis
-      - database
-    restart: always
-
-  immich-microservices:
-    container_name: immich_microservices
-    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
-    devices:
-      - /dev/dri:/dev/dri
-    command: [ 'start.sh', 'microservices' ]
-    volumes:
-      - ${UPLOAD_LOCATION}:/usr/src/app/upload
-      - /etc/localtime:/etc/localtime:ro
-    env_file:
-      - .env
     depends_on:
       - redis
       - database
