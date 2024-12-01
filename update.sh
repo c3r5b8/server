@@ -19,11 +19,11 @@ function decrypt_env_file() {
         if [ "$(hostname)" == "sargas" ]; then
             echo "Restarting Docker Compose services..."
             sudo docker compose down
-            sudo docker compose up -d
+            sudo docker compose up -d --remove-orphans
         fi
     else
         echo "No changes in encrypted .env file, no action taken."
-        sudo docker compose up -d
+        sudo docker compose up -d --remove-orphans
     fi
 }
 
