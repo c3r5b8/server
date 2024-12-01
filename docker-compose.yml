@@ -62,32 +62,6 @@ services:
       - "traefik.http.routers.deluge.rule=Host(`deluge.c3r5b8.dev`)"
       - "traefik.http.services.deluge.loadbalancer.server.port=8112"
 
-  memos:
-    image: neosmemo/memos:stable
-    container_name: memos
-    restart: unless-stopped
-    volumes:
-      - ./services/memos/:/var/opt/memos
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.memos.rule=Host(`memo.c3r5b8.dev`)"
-      - "traefik.http.services.memos.loadbalancer.server.port=5230"
-
-  wyl:
-    image: aceberg/watchyourlan:v2
-    container_name: wyl
-    network_mode: "host"
-    restart: unless-stopped
-    volumes:
-      - ./services/wyl:/data/WatchYourLAN
-    environment:
-      TZ: Europe/Kyiv
-      IFACES: "eno1"
-      TIMEOUT: "30"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.wyl.rule=Host(`wyl.c3r5b8.dev`)"
-      - "traefik.http.services.wyl.loadbalancer.server.port=8840"
   #
   # media
 
@@ -300,6 +274,7 @@ services:
       - "traefik.http.routers.dozzle.rule=Host(`dozzle.c3r5b8.dev`)"
     environment:
       DOZZLE_AUTH_PROVIDER: simple
+
   gotify:
     image: gotify/server
     container_name: gotify
@@ -310,39 +285,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.gotify.rule=Host(`gotify.c3r5b8.dev`)"
       - "traefik.http.services.gotify.loadbalancer.server.port=80"
-
-  #
-  # games
-
-  factorio:
-    image: factoriotools/factorio:stable
-    container_name: factorio
-    environment:
-      - INSTANCE_NAME=Mazafuckers
-      - INSTANCE_DESC=idk
-    ports:
-      - "34197:34197/udp"
-      - "27015:27015/tcp"
-    volumes:
-      - ./services/factorio:/factorio
-    restart: unless-stopped
-  terraria:
-    container_name: terraria
-    image: ghcr.io/beardedio/terraria:latest
-    ports:
-      - '7777:7777'
-    restart: unless-stopped
-    environment:
-      - world=idk.wld
-    volumes:
-      - ./services/terraria/config:/config
-    tty: true
-    stdin_open: true
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.terraria.rule=Host(`terraria.c3r5b8.dev`)"
-      - "traefik.http.services.terraria.loadbalancer.server.port=7777"
-
   #
   # immich
 
