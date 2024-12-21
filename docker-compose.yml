@@ -84,6 +84,20 @@ services:
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
     restart: unless-stopped
 
+  multi-scrobbler:
+    image: foxxmd/multi-scrobbler
+    container_name: multi-scrobbler
+    environment:
+      - TZ=Etc/Kyiv
+      - BASE_URL=https://multiscrobbler.c3r5b8.dev:443
+      - SPOTIFY_CLIENT_ID = ${SPOTIFY_CLIENT_ID}
+      - SPOTIFY_CLIENT_SECRET = ${SPOTIFY_CLIENT_SECRET}
+    volumes:
+      - "./config:/config"
+    ports:
+      - "9078:9078"
+    restart: unless-stopped
+
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:latest
     container_name: nextcloud
