@@ -92,12 +92,6 @@ services:
       - BASE_URL=https://multiscrobbler.c3r5b8.dev:443
       - PUID=1000
       - PGID=1000
-      # - SPOTIFY_CLIENT_ID = ${SPOTIFY_CLIENT_ID}
-      # - SPOTIFY_CLIENT_SECRET = ${SPOTIFY_CLIENT_SECRET}
-      # - MALOJA_URL = ${MALOJA_URL}
-      # - MALOJA_API_KEY = ${MALOJA_API_KEY}
-      # - LASTFM_API_KEY = ${LASTFM_API_KEY}
-      # - LASTFM_SECRET = ${LASTFM_SECRET}
     volumes:
       - "./services/multi-scrobbler:/config"
     ports:
@@ -107,22 +101,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.multi-scrobbler.rule=Host(`multiscrobbler.c3r5b8.dev`)"
       - "traefik.http.services.multi-scrobbler.loadbalancer.server.port=9078"
-
-  nextcloud:
-    image: lscr.io/linuxserver/nextcloud:latest
-    container_name: nextcloud
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Kyiv
-    volumes:
-      - ./services/nextcloud:/config
-      - /mnt/fat_ssd/nextcloud:/data
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.nextcloud.rule=Host(`cloud.c3r5b8.dev`)"
-      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
-    restart: unless-stopped
 
   watchtower:
     image: containrrr/watchtower
@@ -164,36 +142,6 @@ services:
       - "traefik.http.services.maloja.loadbalancer.server.port=42010"
     restart: unless-stopped
 
-  homarr:
-    container_name: homarr
-    image: ghcr.io/ajnart/homarr:latest
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./services/homarr/configs:/app/data/configs
-      - ./services/homarr/icons:/app/public/icons
-      - ./services/homarr/data:/data
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.homarr.rule=Host(`homarr.c3r5b8.dev`)"
-      - "traefik.http.services.homarr.loadbalancer.server.port=7575"
-  dash:
-    image: mauricenino/dashdot:latest
-    restart: unless-stopped
-    container_name: dash
-    privileged: true
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.dash.rule=Host(`dash.c3r5b8.dev`)"
-      - "traefik.http.services.dash.loadbalancer.server.port=3001"
-    volumes:
-      - /:/mnt/host:ro
-    environment:
-      - DASHDOT_WIDGET_LIST=os,cpu,storage,ram,network
-      - DASHDOT_OS_LABEL_LIST=os,arch,up_since,dash_version
-      - DASHDOT_SHOW_HOST=true
-      - DASHDOT_CUSTOM_HOST=sargas
-
   homeassistant:
     container_name: homeassistant
     image: "ghcr.io/home-assistant/home-assistant:stable"
@@ -222,41 +170,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.wakapi.rule=Host(`wakapi.c3r5b8.dev`)"
       - "traefik.http.services.wakapi.loadbalancer.server.port=3000"
-
-  couchdb:
-    image: couchdb
-    container_name: obsidian-livesync
-    user: 1000:1000
-    environment:
-      - COUCHDB_USER=${COUCHDB_USER}
-      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
-    volumes:
-      - ./services/couchdb/data:/opt/couchdb/data
-      - ./services/couchdb/local.ini:/opt/couchdb/etc/local.ini
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.obsidian-livesync.rule=Host(`ols.c3r5b8.dev`)"
-      - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
-    restart: unless-stopped
-
-  syncthing:
-    image: syncthing/syncthing
-    container_name: syncthing
-    hostname: sargas
-    environment:
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - ./services/syncthing:/var/syncthing
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.syncthing.rule=Host(`syncthing.c3r5b8.dev`)"
-      - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
-    ports:
-      - 22000:22000/tcp
-      - 22000:22000/udp
-      - 21027:21027/udp
-    restart: unless-stopped
 
   #
   # monitoring
