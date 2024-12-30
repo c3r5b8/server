@@ -114,6 +114,17 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
+  memos:
+    image: neosmemo/memos:stable
+    container_name: memos
+    restart: unless-stopped
+    volumes:
+      - ./services/memos/:/var/opt/memos
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.memos.rule=Host(`memo.c3r5b8.dev`)"
+      - "traefik.http.services.memos.loadbalancer.server.port=5230"
+
   vaultwarden:
     image: vaultwarden/server:latest
     container_name: vaultwarden
