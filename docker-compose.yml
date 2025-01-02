@@ -146,9 +146,9 @@ services:
     depends_on: 
       root_db: 
         condition: service_healthy
-    environment: 
     image: "nocodb/nocodb:latest"
-    NC_DB: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@root_db:5432/root_db"
+    environment: 
+      NC_DB: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@root_db:5432/root_db"
     restart: always
     volumes: 
       - "nc_data:/usr/app/data"
