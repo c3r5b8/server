@@ -142,6 +142,31 @@ services:
       - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
     restart: unless-stopped
 
+  nocodb: 
+    depends_on: 
+      root_db: 
+        condition: service_healthy
+    environment: 
+    image: "nocodb/nocodb:latest"
+    NC_DB: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@root_db:5432/root_db"
+    restart: always
+    volumes: 
+      - "nc_data:/usr/app/data"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.noco.rule=Host(`noco.c3r5b8.dev`)"
+      - "traefik.http.services.noco.loadbalancer.server.port=8080"
+  root_db: 
+    healthcheck: 
+      interval: 10s
+      retries: 10
+      test: "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""
+      timeout: 2s
+    image: postgres:16.6
+    restart: always
+    volumes: 
+      - "db_data:/var/lib/postgresql/data"
+
   vaultwarden:
     image: vaultwarden/server:latest
     container_name: vaultwarden
