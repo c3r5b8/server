@@ -149,7 +149,7 @@ services:
     image: "nocodb/nocodb:latest"
     container_name: noco
     environment: 
-      NC_DB: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@root_db:5432/root_db"
+      NC_DB: "pg://nocodb:5432?u=${POSTGRES_USER}&p=${POSTGRES_PASSWORD}&d=root_db"
     restart: always
     volumes: 
       - "./services/nocodb/nocon:/usr/app/data"
