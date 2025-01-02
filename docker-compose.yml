@@ -147,6 +147,7 @@ services:
       root_db: 
         condition: service_healthy
     image: "nocodb/nocodb:latest"
+    container_name: noco
     environment: 
       NC_DB: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@root_db:5432/root_db"
     restart: always
@@ -157,6 +158,7 @@ services:
       - "traefik.http.routers.noco.rule=Host(`noco.c3r5b8.dev`)"
       - "traefik.http.services.noco.loadbalancer.server.port=8080"
   root_db: 
+    container_name: nocodb
     healthcheck: 
       interval: 10s
       retries: 10
