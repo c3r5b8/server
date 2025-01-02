@@ -151,7 +151,7 @@ services:
       NC_DB: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@root_db:5432/root_db"
     restart: always
     volumes: 
-      - "nc_data:/usr/app/data"
+      - "./services/nocodb/nocon:/usr/app/data"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.noco.rule=Host(`noco.c3r5b8.dev`)"
@@ -165,7 +165,7 @@ services:
     image: postgres:16.6
     restart: always
     volumes: 
-      - "db_data:/var/lib/postgresql/data"
+      - "./services/nocodb/db:/var/lib/postgresql/data"
 
   vaultwarden:
     image: vaultwarden/server:latest
