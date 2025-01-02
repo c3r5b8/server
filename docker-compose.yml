@@ -23,6 +23,9 @@ services:
       - "--metrics.prometheus.entryPoint=metrics"
       - "--metrics.prometheus.addEntryPointsLabels=true"
       - "--metrics.prometheus.addServicesLabels=true"
+      - "--http.routers.local-service.rule=Host(`test.c3r5b8.dev`)"
+      - "--http.routers.local-service.entrypoints=web"
+      - "--http.services.local-service.loadbalancer.servers.0.url=http://host.docker.internal:3000"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`proxy.c3r5b8.dev`)"
