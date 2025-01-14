@@ -87,6 +87,20 @@ services:
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
     restart: unless-stopped
 
+  pinchflat:
+    image: ghcr.io/kieraneglin/pinchflat:latest
+    environment:
+      - TZ=Europe/Kyiv
+      - PUID=1000
+      - PGID=1000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pinchfla.rule=Host(`pinchfla.c3r5b8.dev`)"
+      - "traefik.http.services.pinchfla.loadbalancer.server.port=8945"
+    volumes:
+      - ./services/pinchfla:/config
+      - /mnt/fat_ssd/media:/downloads
+
   multi-scrobbler:
     image: foxxmd/multi-scrobbler
     container_name: multi-scrobbler
