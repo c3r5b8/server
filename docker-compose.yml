@@ -235,6 +235,8 @@ services:
     image: henrygd/beszel
     container_name: beszel
     restart: unless-stopped
+    extra_hosts:
+      - host.docker.internal:host-gateway
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.beszel.rule=Host(`beszel.c3r5b8.dev`)"
