@@ -216,6 +216,32 @@ services:
       - "traefik.http.routers.wakapi.rule=Host(`wakapi.c3r5b8.dev`)"
       - "traefik.http.services.wakapi.loadbalancer.server.port=3000"
 
+  radicale:
+    image: tomsquest/docker-radicale
+    container_name: radicale
+    init: true
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      - CHOWN
+      - KILL
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          pids: 50
+    restart: unless-stopped
+    volumes:
+      - ./services/radicale:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.radicale.rule=Host(`radicale.c3r5b8.dev`)"
+      - "traefik.http.services.radicale.loadbalancer.server.port=5232"
   #
   # monitoring
 
