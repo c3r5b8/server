@@ -216,6 +216,22 @@ services:
       - "traefik.http.routers.wakapi.rule=Host(`wakapi.c3r5b8.dev`)"
       - "traefik.http.services.wakapi.loadbalancer.server.port=3000"
 
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Kyiv
+    volumes:
+      - ./services/nextcloud:/config
+      - /mnt/fat_ssd/nextcloud:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.rule=Host(`cloud.c3r5b8.dev`)"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+    restart: unless-stopped
+
   radicale:
     image: tomsquest/docker-radicale
     container_name: radicale
