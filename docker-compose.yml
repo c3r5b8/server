@@ -297,6 +297,15 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`grafana.c3r5b8.dev`)"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+  glance:
+    container_name: glance
+    image: glanceapp/glance
+    volumes:
+      - ./services/glance:/app/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.glance.rule=Host(`glance.c3r5b8.dev`)"
+      - "traefik.http.services.glance.loadbalancer.server.port=8000"
 
   beszel:
     image: henrygd/beszel
