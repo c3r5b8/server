@@ -128,6 +128,21 @@ services:
       - "traefik.http.routers.memos.rule=Host(`memo.c3r5b8.dev`)"
       - "traefik.http.services.memos.loadbalancer.server.port=5230"
 
+  factorio:
+    image: factoriotools/factorio:stable
+    container_name: factorio
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+
+    ports:
+     - "34197:34197/udp"
+    # environment:
+    #   - GENERATE_NEW_SAVE=true
+    #   - SAVE_NAME=qq
+    volumes:
+     - ./services/factorio:/factorio
+
   couchdb:
     image: couchdb
     container_name: obsidian-livesync
@@ -241,23 +256,6 @@ services:
         - "traefik.enable=true"
         - "traefik.http.routers.nextcloud.rule=Host(`cloud.c3r5b8.dev`)"
         - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
-          # - "traefik.http.routers.nextcloud.entrypoints=http"
-          # - "traefik.http.routers.nextcloud.rule=Host(`cloud.c3r5b8.dev`)"
-          # - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
-          # - "traefik.http.routers.nextcloud.middlewares=nc-header,https-redirect"
-          # - "traefik.http.routers.nextcloud-secure.entrypoints=https"
-          # - "traefik.http.routers.nextcloud-secure.rule=Host(`cloud.c3r5b8.dev`)"
-          # - "traefik.http.middlewares.nc-rep.redirectregex.regex=https://(.*)/.well-known/(card|cal)dav"
-          # - "traefik.http.middlewares.nc-rep.redirectregex.replacement=https://$$1/remote.php/dav/"
-          # - "traefik.http.middlewares.nc-rep.redirectregex.permanent=true"
-          # - "traefik.http.middlewares.nc-header.headers.customFrameOptionsValue=SAMEORIGIN"
-          # - "traefik.http.middlewares.nc-header.headers.customResponseHeaders.Strict-Transport-Security=15552000"
-          # - "traefik.http.routers.nextcloud-secure.middlewares=nc-rep,nc-header"
-          # # - "traefik.http.routers.nextcloud-secure.tls=true"
-          # # - "traefik.http.routers.nextcloud-secure.tls.certresolver=letsencrypt"
-          # # - "traefik.http.routers.nextcloud-secure.service=nextcloud"
-          # - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
-          # - "traefik.http.services.nextcloud.loadbalancer.passHostHeader=true"
 
   radicale:
     image: tomsquest/docker-radicale
