@@ -305,7 +305,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.glance.rule=Host(`glance.c3r5b8.dev`)"
-      - "traefik.http.services.glance.loadbalancer.server.port=8000"
+      - "traefik.http.services.glance.loadbalancer.server.port=8080"
 
   beszel:
     image: henrygd/beszel
