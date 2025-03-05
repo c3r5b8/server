@@ -36,8 +36,8 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./services/traefik/acme.json:/acme.json"
-      - "./services/traefik/traefik.json:/traefik.json"
-      - "./services/traefik/traefik.yaml:/etc/traefik/dynamic-config.yaml"
+      # - "./services/traefik/traefik.json:/traefik.json"
+      # - "./services/traefik/traefik.yaml:/etc/traefik/dynamic-config.yaml"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
@@ -128,20 +128,20 @@ services:
       - "traefik.http.routers.memos.rule=Host(`memo.c3r5b8.dev`)"
       - "traefik.http.services.memos.loadbalancer.server.port=5230"
 
-  factorio:
-    image: factoriotools/factorio:stable
-    container_name: factorio
-    restart: unless-stopped
-    stdin_open: true
-    tty: true
-
-    ports:
-     - "34197:34197/udp"
-    # environment:
-    #   - GENERATE_NEW_SAVE=true
-    #   - SAVE_NAME=qq
-    volumes:
-     - ./services/factorio:/factorio
+  # factorio:
+  #   image: factoriotools/factorio:stable
+  #   container_name: factorio
+  #   restart: unless-stopped
+  #   stdin_open: true
+  #   tty: true
+  #
+  #   ports:
+  #    - "34197:34197/udp"
+  #   # environment:
+  #   #   - GENERATE_NEW_SAVE=true
+  #   #   - SAVE_NAME=qq
+  #   volumes:
+  #    - ./services/factorio:/factorio
 
   couchdb:
     image: couchdb
@@ -173,178 +173,178 @@ services:
       - DOMAIN=https://pass.c3r5b8.dev
       - WEBSOCKET_ENABLED=true
 
-  maloja:
-    image: "krateng/maloja:latest"
-    container_name: maloja
-    volumes:
-      - ./services/maloja:/data
-    environment:
-      - MALOJA_DATA_DIRECTORY=/data
-      - MALOJA_FORCE_PASSWORD=${MALOJA_FORCE_PASSWORD}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.maloja.rule=Host(`maloja.c3r5b8.dev`)"
-      - "traefik.http.services.maloja.loadbalancer.server.port=42010"
-    restart: unless-stopped
+  # maloja:
+  #   image: "krateng/maloja:latest"
+  #   container_name: maloja
+  #   volumes:
+  #     - ./services/maloja:/data
+  #   environment:
+  #     - MALOJA_DATA_DIRECTORY=/data
+  #     - MALOJA_FORCE_PASSWORD=${MALOJA_FORCE_PASSWORD}
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.maloja.rule=Host(`maloja.c3r5b8.dev`)"
+  #     - "traefik.http.services.maloja.loadbalancer.server.port=42010"
+  #   restart: unless-stopped
 
-  homeassistant:
-    container_name: homeassistant
-    image: "ghcr.io/home-assistant/home-assistant:stable"
-    volumes:
-      - ./services/homeassistant/config:/config
-      - /etc/localtime:/etc/localtime:ro
-      - /run/dbus:/run/dbus:ro
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.homeassistant.rule=Host(`home.c3r5b8.dev`)"
-      - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
-    privileged: true
-    network_mode: host
+  # homeassistant:
+  #   container_name: homeassistant
+  #   image: "ghcr.io/home-assistant/home-assistant:stable"
+  #   volumes:
+  #     - ./services/homeassistant/config:/config
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /run/dbus:/run/dbus:ro
+  #   restart: unless-stopped
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.homeassistant.rule=Host(`home.c3r5b8.dev`)"
+  #     - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
+  #   privileged: true
+  #   network_mode: host
 
-  wakapi:
-    image: ghcr.io/muety/wakapi:latest
-    container_name: wakapi
-    restart: unless-stopped
-    environment:
-      - WAKAPI_PUBLIC_URL=https://wakapi.c3r5b8.dev
-      - WAKAPI_PASSWORD_SALT=${WAKAPI_PASSWORD_SALT}
-    volumes:
-      - ./services/wakapi:/data
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.wakapi.rule=Host(`wakapi.c3r5b8.dev`)"
-      - "traefik.http.services.wakapi.loadbalancer.server.port=3000"
+  # wakapi:
+  #   image: ghcr.io/muety/wakapi:latest
+  #   container_name: wakapi
+  #   restart: unless-stopped
+  #   environment:
+  #     - WAKAPI_PUBLIC_URL=https://wakapi.c3r5b8.dev
+  #     - WAKAPI_PASSWORD_SALT=${WAKAPI_PASSWORD_SALT}
+  #   volumes:
+  #     - ./services/wakapi:/data
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.wakapi.rule=Host(`wakapi.c3r5b8.dev`)"
+  #     - "traefik.http.services.wakapi.loadbalancer.server.port=3000"
 
-  nextcloud-db:
-      image: mariadb:latest
-      container_name: nextcloud-db
-      command: --transaction-isolation=READ-COMMITTED --log-bin=ROW --skip-innodb-read-only-compressed
-      restart: unless-stopped
-      volumes:
-          - ./services/nextcloud/mysql-data:/var/lib/mysql
-      environment:
-          - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD} # MYSQL ROOT PASSWORD
-          - MYSQL_PASSWORD=${MYSQL_PASSWORD} # PASSWORD OF MYSQL USER
-          - MYSQL_DATABASE=nextcloud # MYSQL DATABASE
-          - MYSQL_USER=nextcloud # MYSQL USERNAME
+  # nextcloud-db:
+  #     image: mariadb:latest
+  #     container_name: nextcloud-db
+  #     command: --transaction-isolation=READ-COMMITTED --log-bin=ROW --skip-innodb-read-only-compressed
+  #     restart: unless-stopped
+  #     volumes:
+  #         - ./services/nextcloud/mysql-data:/var/lib/mysql
+  #     environment:
+  #         - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD} # MYSQL ROOT PASSWORD
+  #         - MYSQL_PASSWORD=${MYSQL_PASSWORD} # PASSWORD OF MYSQL USER
+  #         - MYSQL_DATABASE=nextcloud # MYSQL DATABASE
+  #         - MYSQL_USER=nextcloud # MYSQL USERNAME
+  #
+  # nextcloud-redis:
+  #     image: redis:alpine
+  #     container_name: nextcloud-redis
+  #     hostname: nextcloud-redis
+  #     restart: unless-stopped
+  #     command: redis-server --requirepass ${REDIS_HOST_PASSWORD} # REPLACE WITH REDIS PASSWORD
+  #
+  # nextcloud-app:
+  #     image: nextcloud
+  #     container_name: nextcloud-app
+  #     restart: unless-stopped
+  #     depends_on:
+  #         - nextcloud-db
+  #         - nextcloud-redis
+  #     environment:
+  #         - REDIS_HOST=nextcloud-redis
+  #         - REDIS_HOST_PASSWORD=${REDIS_HOST_PASSWORD} # REPLACE WITH REDIS PASSWORD
+  #         - MYSQL_HOST=nextcloud-db
+  #         - MYSQL_USER=nextcloud # MYSQL USERNAME
+  #         - MYSQL_PASSWORD=${MYSQL_PASSWORD} # PASSWORD OF MYSQL USER
+  #         - MYSQL_DATABASE=nextcloud # MYSQL DATABASE
+  #     volumes:
+  #         - ./services/nextcloud/app:/var/www/html
+  #     labels:
+  #       - "traefik.enable=true"
+  #       - "traefik.http.routers.nextcloud.rule=Host(`cloud.c3r5b8.dev`)"
+  #       - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
 
-  nextcloud-redis:
-      image: redis:alpine
-      container_name: nextcloud-redis
-      hostname: nextcloud-redis
-      restart: unless-stopped
-      command: redis-server --requirepass ${REDIS_HOST_PASSWORD} # REPLACE WITH REDIS PASSWORD
-
-  nextcloud-app:
-      image: nextcloud
-      container_name: nextcloud-app
-      restart: unless-stopped
-      depends_on:
-          - nextcloud-db
-          - nextcloud-redis
-      environment:
-          - REDIS_HOST=nextcloud-redis
-          - REDIS_HOST_PASSWORD=${REDIS_HOST_PASSWORD} # REPLACE WITH REDIS PASSWORD
-          - MYSQL_HOST=nextcloud-db
-          - MYSQL_USER=nextcloud # MYSQL USERNAME
-          - MYSQL_PASSWORD=${MYSQL_PASSWORD} # PASSWORD OF MYSQL USER
-          - MYSQL_DATABASE=nextcloud # MYSQL DATABASE
-      volumes:
-          - ./services/nextcloud/app:/var/www/html
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.nextcloud.rule=Host(`cloud.c3r5b8.dev`)"
-        - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
-
-  radicale:
-    image: tomsquest/docker-radicale
-    container_name: radicale
-    init: true
-    read_only: true
-    security_opt:
-      - no-new-privileges:true
-    cap_drop:
-      - ALL
-    cap_add:
-      - SETUID
-      - SETGID
-      - CHOWN
-      - KILL
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-          pids: 50
-    restart: unless-stopped
-    volumes:
-      - ./services/radicale:/data
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.radicale.rule=Host(`radicale.c3r5b8.dev`)"
-      - "traefik.http.services.radicale.loadbalancer.server.port=5232"
+  # radicale:
+  #   image: tomsquest/docker-radicale
+  #   container_name: radicale
+  #   init: true
+  #   read_only: true
+  #   security_opt:
+  #     - no-new-privileges:true
+  #   cap_drop:
+  #     - ALL
+  #   cap_add:
+  #     - SETUID
+  #     - SETGID
+  #     - CHOWN
+  #     - KILL
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 256M
+  #         pids: 50
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./services/radicale:/data
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.radicale.rule=Host(`radicale.c3r5b8.dev`)"
+      # - "traefik.http.services.radicale.loadbalancer.server.port=5232"
   #
   # monitoring
 
-  grafana:
-    image: grafana/grafana-enterprise
-    container_name: grafana
-    restart: unless-stopped
-    volumes:
-      - ./services/grafana:/var/lib/grafana
-    user: '1000'
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.grafana.rule=Host(`grafana.c3r5b8.dev`)"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-  glance:
-    container_name: glance
-    image: glanceapp/glance
-    volumes:
-      - ./services/glance:/app/config
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.glance.rule=Host(`glance.c3r5b8.dev`)"
-      - "traefik.http.services.glance.loadbalancer.server.port=8080"
+  # grafana:
+  #   image: grafana/grafana-enterprise
+  #   container_name: grafana
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./services/grafana:/var/lib/grafana
+  #   user: '1000'
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.grafana.rule=Host(`grafana.c3r5b8.dev`)"
+  #     - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+  # glance:
+  #   container_name: glance
+  #   image: glanceapp/glance
+  #   volumes:
+  #     - ./services/glance:/app/config
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.glance.rule=Host(`glance.c3r5b8.dev`)"
+  #     - "traefik.http.services.glance.loadbalancer.server.port=8080"
 
-  beszel:
-    image: henrygd/beszel
-    container_name: beszel
-    restart: unless-stopped
-    extra_hosts:
-      - host.docker.internal:host-gateway
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.beszel.rule=Host(`beszel.c3r5b8.dev`)"
-      - "traefik.http.services.beszel.loadbalancer.server.port=8090"
-    volumes:
-      - ./services/beszel:/beszel_data
+  # beszel:
+  #   image: henrygd/beszel
+  #   container_name: beszel
+  #   restart: unless-stopped
+  #   extra_hosts:
+  #     - host.docker.internal:host-gateway
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.beszel.rule=Host(`beszel.c3r5b8.dev`)"
+  #     - "traefik.http.services.beszel.loadbalancer.server.port=8090"
+  #   volumes:
+  #     - ./services/beszel:/beszel_data
+  #
+  # beszel-agent:
+  #   image: "henrygd/beszel-agent"
+  #   container_name: "beszel-agent"
+  #   restart: unless-stopped
+  #   network_mode: host
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #     # monitor other disks / partitions by mounting a folder in /extra-filesystems
+  #     - /mnt/fat_ssd:/extra-filesystems/nvme0n1p1:ro
+  #   environment:
+  #     PORT: 45876
+  #     KEY: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKk77ja2evXzMEtSgCAmM1y3Vmij4YfeLwGKM+PWjbJB"
 
-  beszel-agent:
-    image: "henrygd/beszel-agent"
-    container_name: "beszel-agent"
-    restart: unless-stopped
-    network_mode: host
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      # monitor other disks / partitions by mounting a folder in /extra-filesystems
-      - /mnt/fat_ssd:/extra-filesystems/nvme0n1p1:ro
-    environment:
-      PORT: 45876
-      KEY: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKk77ja2evXzMEtSgCAmM1y3Vmij4YfeLwGKM+PWjbJB"
-
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    restart: unless-stopped
-    volumes:
-      - ./services/prometheus:/etc/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.prometheus.rule=Host(`prometheus.c3r5b8.dev`)"
-      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+  # prometheus:
+  #   image: prom/prometheus
+  #   container_name: prometheus
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./services/prometheus:/etc/prometheus
+  #   command:
+  #     - '--config.file=/etc/prometheus/prometheus.yml'
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.prometheus.rule=Host(`prometheus.c3r5b8.dev`)"
+  #     - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
 
   dozzle:
     image: amir20/dozzle:latest
