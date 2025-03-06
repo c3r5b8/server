@@ -6,7 +6,7 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--providers.file.filename=/etc/traefik/dynamic-config.yaml"
+      # - "--providers.file.filename=/etc/traefik/dynamic-config.yaml"
       - "--entrypoints.web.address=:80"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
