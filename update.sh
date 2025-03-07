@@ -16,7 +16,7 @@ function decrypt_env_file() {
     if [ -n "$(git diff HEAD~1 HEAD --name-only | grep 'enc.env')" ]; then
         echo "Encrypted .env file has changed, decrypting..."
         sops -d enc.env > .env
-        if [ "$(hostname)" == "sargas" ]; then
+        if [ "$(hostname)" == "vm-debian" ]; then
             echo "Restarting Docker Compose services..."
             sudo docker compose down
             sudo docker compose up -d --remove-orphans
