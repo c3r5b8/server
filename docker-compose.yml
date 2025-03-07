@@ -92,8 +92,6 @@ services:
       - PGID=1000
     volumes:
       - "./services/multi-scrobbler:/config"
-    ports:
-      - "9078:9078"
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
