@@ -39,6 +39,26 @@ services:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
 
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/Kyiv
+      - WEBUI_PORT=8080
+      - DOCKER_MODS=ghcr.io/vuetorrent/vuetorrent-lsio-mod:latest
+      - TORRENTING_PORT=6881
+    volumes:
+      - ./services/qbittorrent:/config
+      - /mnt/fat_ssd/media:/downloads
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.qbittorent.rule=Host(`qb.c3r5b8.dev`)"
+      - "traefik.http.services.qbittorent.loadbalancer.server.port=8080"
 
   pihole:
     container_name: pihole
@@ -148,17 +168,33 @@ services:
   couchdb:
     image: couchdb
     container_name: obsidian-livesync
-    user: 1000:1000
+    # user: 1000:1000
     environment:
       - COUCHDB_USER=${COUCHDB_USER}
       - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
     volumes:
-      - ./services/couchdb/data:/opt/couchdb/data
-      - ./services/couchdb/local.ini:/opt/couchdb/etc/local.ini
+      - ./services/couchdb2/data:/opt/couchdb/data
+      - ./services/couchdb2/etc:/opt/couchdb/etc/local.d
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.obsidian-livesync.rule=Host(`ols.c3r5b8.dev`)"
       - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
+      # The 'websecure' entryPoint is basically your HTTPS entrypoint. Check the next code snippet if you are encountering problems only; you probably have a working traefik configuration if this is not your first container you are reverse proxying.
+#      - "traefik.http.routers.obsidian-livesync.entrypoints=websecure"
+#      - "traefik.http.routers.obsidian-livesync.service=obsidian-livesync"
+#      - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
+#      - "traefik.http.routers.obsidian-livesync.tls=true"
+      # Replace the string 'letsencrypt' with your own certificate resolver
+#      - "traefik.http.routers.obsidian-livesync.tls.certresolver=letsencrypt"
+#      - "traefik.http.routers.obsidian-livesync.middlewares=obsidiancors"
+      # The part needed for CORS to work on Traefik 2.x starts here
+      - "traefik.http.middlewares.obsidiancors.headers.accesscontrolallowmethods=GET,PUT,POST,HEAD,DELETE"
+      - "traefik.http.middlewares.obsidiancors.headers.accesscontrolallowheaders=accept,authorization,content-type,origin,referer"
+      - "traefik.http.middlewares.obsidiancors.headers.accesscontrolalloworiginlist=app://obsidian.md,capacitor://localhost,http://localhost"
+      - "traefik.http.middlewares.obsidiancors.headers.accesscontrolmaxage=3600"
+      - "traefik.http.middlewares.obsidiancors.headers.addvaryheader=true"
+      - "traefik.http.middlewares.obsidiancors.headers.accessControlAllowCredentials=true"
+
     restart: unless-stopped
 
   vaultwarden:
