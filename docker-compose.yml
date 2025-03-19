@@ -117,6 +117,7 @@ services:
 
   hoarder:
     image: ghcr.io/hoarder-app/hoarder:release
+    container_name: hoarder
     restart: unless-stopped
     volumes:
       - ./services/hoarder/data:/data
@@ -131,6 +132,7 @@ services:
       - "traefik.http.services.hoarder.loadbalancer.server.port=3000"
   chrome:
     image: gcr.io/zenika-hub/alpine-chrome:123
+    container_name: chrome
     restart: unless-stopped
     command:
       - --no-sandbox
@@ -141,6 +143,7 @@ services:
       - --hide-scrollbars
   meilisearch:
     image: getmeili/meilisearch:v1.11.1
+    container_name: meilisearch
     restart: unless-stopped
     environment:
       MEILI_NO_ANALYTICS: "true"
