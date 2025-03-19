@@ -52,8 +52,6 @@ services:
     volumes:
       - ./services/qbittorrent:/config
       - /mnt/fat_ssd/media:/downloads
-    ports:
-      - 8080:8080
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -66,8 +64,6 @@ services:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
-      # - "80:80/tcp"
-      # - "443:443/tcp"
     environment:
       TZ: 'Europe/Kyiv'
       FTLCONF_dns_listeningMode: 'all'
@@ -80,28 +76,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.pihole.rule=Host(`pihole.c3r5b8.dev`)"
       - "traefik.http.services.pihole.loadbalancer.server.port=80"
-
-
-  deluge:
-    image: lscr.io/linuxserver/deluge:latest
-    container_name: deluge
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/Kyiv
-      - DELUGE_LOGLEVEL=error
-    volumes:
-      - ./services/deluge/config:/config
-      - /mnt/fat_ssd/media:/downloads
-    ports:
-      - 6881:6881
-      - 6881:6881/udp
-      - 58846:58846
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.deluge.rule=Host(`deluge.c3r5b8.dev`)"
-      - "traefik.http.services.deluge.loadbalancer.server.port=8112"
 
   #
   # media
@@ -164,38 +138,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.memos.rule=Host(`memo.c3r5b8.dev`)"
       - "traefik.http.services.memos.loadbalancer.server.port=5230"
-
-  couchdb:
-    image: couchdb
-    container_name: obsidian-livesync
-    # user: 1000:1000
-    environment:
-      - COUCHDB_USER=${COUCHDB_USER}
-      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
-    volumes:
-      - ./services/couchdb2/data:/opt/couchdb/data
-      - ./services/couchdb2/etc:/opt/couchdb/etc/local.d
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.obsidian-livesync.rule=Host(`ols.c3r5b8.dev`)"
-      - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
-      # The 'websecure' entryPoint is basically your HTTPS entrypoint. Check the next code snippet if you are encountering problems only; you probably have a working traefik configuration if this is not your first container you are reverse proxying.
-#      - "traefik.http.routers.obsidian-livesync.entrypoints=websecure"
-#      - "traefik.http.routers.obsidian-livesync.service=obsidian-livesync"
-#      - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
-#      - "traefik.http.routers.obsidian-livesync.tls=true"
-      # Replace the string 'letsencrypt' with your own certificate resolver
-#      - "traefik.http.routers.obsidian-livesync.tls.certresolver=letsencrypt"
-#      - "traefik.http.routers.obsidian-livesync.middlewares=obsidiancors"
-      # The part needed for CORS to work on Traefik 2.x starts here
-      - "traefik.http.middlewares.obsidiancors.headers.accesscontrolallowmethods=GET,PUT,POST,HEAD,DELETE"
-      - "traefik.http.middlewares.obsidiancors.headers.accesscontrolallowheaders=accept,authorization,content-type,origin,referer"
-      - "traefik.http.middlewares.obsidiancors.headers.accesscontrolalloworiginlist=app://obsidian.md,capacitor://localhost,http://localhost"
-      - "traefik.http.middlewares.obsidiancors.headers.accesscontrolmaxage=3600"
-      - "traefik.http.middlewares.obsidiancors.headers.addvaryheader=true"
-      - "traefik.http.middlewares.obsidiancors.headers.accessControlAllowCredentials=true"
-
-    restart: unless-stopped
 
   vaultwarden:
     image: vaultwarden/server:latest
