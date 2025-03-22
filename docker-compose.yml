@@ -112,6 +112,19 @@ services:
       - "traefik.http.routers.multi-scrobbler.rule=Host(`multiscrobbler.c3r5b8.dev`)"
       - "traefik.http.services.multi-scrobbler.loadbalancer.server.port=9078"
 
+  #
+  # RSS
+  fullfeedrss:
+    image: 'heussd/fivefilters-full-text-rss:latest'
+    environment:
+      - FTR_ADMIN_PASSWORD=
+    volumes:
+      - 'rss-cache:/var/www/html/cache/rss'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.fullfeedrss.hoarder.rule=Host(`frss.c3r5b8.dev`)"
+      - "traefik.http.services.fullfeedrss.loadbalancer.server.port=80"
+
   hoarder:
     image: ghcr.io/hoarder-app/hoarder:release
     container_name: hoarder
