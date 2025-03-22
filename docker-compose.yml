@@ -77,21 +77,6 @@ services:
       - "traefik.http.routers.pihole.rule=Host(`pihole.c3r5b8.dev`)"
       - "traefik.http.services.pihole.loadbalancer.server.port=80"
 
-  homepage:
-    image: ghcr.io/gethomepage/homepage:latest
-    container_name: homepage
-    volumes:
-      - ./services/homepage:/app/config
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      HOMEPAGE_ALLOWED_HOSTS: home.c3r5b8.dev
-      PUID: 1000
-      PGID: 1000
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.homepage.rule=Host(`home.c3r5b8.dev`)"
-      - "traefik.http.services.homepage.loadbalancer.server.port=3000"
-
   #
   # media
 
