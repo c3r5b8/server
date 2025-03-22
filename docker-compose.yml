@@ -119,7 +119,7 @@ services:
     environment:
       - FTR_ADMIN_PASSWORD=
     volumes:
-      - 'rss-cache:/var/www/html/cache/rss'
+      - './services/fullfeedrss:/var/www/html/cache/rss'
     labels:
       - "traefik.enable=true"
       - "traefik.http.fullfeedrss.hoarder.rule=Host(`frss.c3r5b8.dev`)"
