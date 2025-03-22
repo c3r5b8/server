@@ -87,12 +87,9 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Kyiv
-      # - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
     volumes:
       - ./services/jellyfin:/config
       - /mnt/fat_ssd/media:/media
-    # devices:
-    #   - /dev/dri:/dev/dri
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.c3r5b8.dev`)"
@@ -155,11 +152,8 @@ services:
     image: containrrr/watchtower
     container_name: watchtower
     environment:
-      - WATCHTOWER_NOTIFICATIONS=gotify
-      - WATCHTOWER_NOTIFICATION_GOTIFY_URL=https://gotify.c3r5b8.dev
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_POLL_INTERVAL=300
-      - WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN=${WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
@@ -202,16 +196,6 @@ services:
     environment:
       DOZZLE_AUTH_PROVIDER: simple
 
-  gotify:
-    image: gotify/server
-    container_name: gotify
-    restart: unless-stopped
-    volumes:
-      - ./services/gotify:/app/data
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.gotify.rule=Host(`gotify.c3r5b8.dev`)"
-      - "traefik.http.services.gotify.loadbalancer.server.port=80"
   #
   # immich
 
