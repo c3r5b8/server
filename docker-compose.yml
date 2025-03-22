@@ -122,7 +122,7 @@ services:
       - './services/fullfeedrss:/var/www/html/cache/rss'
     labels:
       - "traefik.enable=true"
-      - "traefik.http.fullfeedrss.rule=Host(`frss.c3r5b8.dev`)"
+      - "traefik.http.routers.fullfeedrss.rule=Host(`frss.c3r5b8.dev`)"
       - "traefik.http.services.fullfeedrss.loadbalancer.server.port=80"
 
   hoarder:
