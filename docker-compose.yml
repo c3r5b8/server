@@ -95,6 +95,22 @@ services:
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
     restart: unless-stopped
 
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    environment:
+      - TZ=Etc/Kyiv
+    volumes:
+      - /mnt/fat_ssd/media/audiobooks:/audiobooks
+      - /mnt/fat_ssd/media/podcasts:/podcasts
+      - ./services/audiobookshelf/config:/config
+      - ./services/audiobookshelf/metadata:/metadata
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.audiobookshelf.rule=Host(`audiobooks.c3r5b8.dev`)"
+      - "traefik.http.services.audiobookshelf.loadbalancer.server.port=80"
+    restart: unless-stopped
+
   multi-scrobbler:
     image: foxxmd/multi-scrobbler
     container_name: multi-scrobbler
