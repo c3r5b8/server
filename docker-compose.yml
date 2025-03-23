@@ -111,6 +111,22 @@ services:
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
     restart: unless-stopped
 
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    user: 1000:1000
+    restart: unless-stopped
+    environment:
+      # Optional: put your config options customization here. Examples:
+      # ND_LOGLEVEL: debug
+    volumes:
+      - "./services/navidrome:/data"
+      - /mnt/fat_ssd/media/music:/music:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.navidrome.rule=Host(`navidrome.c3r5b8.dev`)"
+      - "traefik.http.services.navidrome.loadbalancer.server.port=4533"
+
   multi-scrobbler:
     image: foxxmd/multi-scrobbler
     container_name: multi-scrobbler
