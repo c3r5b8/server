@@ -116,9 +116,9 @@ services:
     container_name: navidrome
     user: 1000:1000
     restart: unless-stopped
-    environment:
-      # Optional: put your config options customization here. Examples:
-      # ND_LOGLEVEL: debug
+    # environment:
+    #   # Optional: put your config options customization here. Examples:
+    #   # ND_LOGLEVEL: debug
     volumes:
       - "./services/navidrome:/data"
       - /mnt/fat_ssd/media/music:/music:ro
