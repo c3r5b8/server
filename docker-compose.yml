@@ -58,6 +58,18 @@ services:
       - "traefik.http.routers.qbittorent.rule=Host(`qb.c3r5b8.dev`)"
       - "traefik.http.services.qbittorent.loadbalancer.server.port=8080"
 
+  deemix:
+    image: ghcr.io/bambanah/deemix:latest
+    container_name: deemix
+    volumes:
+      - /mnt/fat_ssd/media/music:/downloads
+      - ./services/deemix/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.deemix.rule=Host(`deemix.c3r5b8.dev`)"
+      - "traefik.http.services.deemix.loadbalancer.server.port=6595"
+    restart: unless-stopped
+
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
