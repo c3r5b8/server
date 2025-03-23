@@ -142,6 +142,17 @@ services:
       - "traefik.http.services.freshrss.loadbalancer.server.port=80"
     restart: unless-stopped
 
+  rss-bridge:
+    image: rssbridge/rss-bridge:latest
+    container_name: rss-bridge
+    volumes:
+      - ./services/rss-bridge:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rss-bridge.rule=Host(`rssb.c3r5b8.dev`)"
+      - "traefik.http.services.rss-bridge.loadbalancer.server.port=80"
+    restart: unless-stopped
+
   hoarder:
     image: ghcr.io/hoarder-app/hoarder:release
     container_name: hoarder
