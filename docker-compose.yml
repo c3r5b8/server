@@ -64,6 +64,9 @@ services:
     volumes:
       - /mnt/fat_ssd/media/music:/downloads
       - ./services/deemix/config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.deemix.rule=Host(`deemix.c3r5b8.dev`)"
