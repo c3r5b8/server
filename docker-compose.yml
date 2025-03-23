@@ -57,22 +57,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.qbittorent.rule=Host(`qb.c3r5b8.dev`)"
       - "traefik.http.services.qbittorent.loadbalancer.server.port=8080"
-
-  deemix:
-    image: ghcr.io/bambanah/deemix:latest
-    container_name: deemix
-    volumes:
-      - /mnt/fat_ssd/media/music:/downloads
-      - ./services/deemix/config:/config
-    environment:
-      - PUID=1000
-      - PGID=1000
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.deemix.rule=Host(`deemix.c3r5b8.dev`)"
-      - "traefik.http.services.deemix.loadbalancer.server.port=6595"
-    restart: unless-stopped
-
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
@@ -110,22 +94,6 @@ services:
       - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.c3r5b8.dev`)"
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
     restart: unless-stopped
-
-  navidrome:
-    image: deluan/navidrome:latest
-    container_name: navidrome
-    user: 1000:1000
-    restart: unless-stopped
-    # environment:
-    #   # Optional: put your config options customization here. Examples:
-    #   # ND_LOGLEVEL: debug
-    volumes:
-      - "./services/navidrome:/data"
-      - /mnt/fat_ssd/media/music:/music:ro
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.navidrome.rule=Host(`navidrome.c3r5b8.dev`)"
-      - "traefik.http.services.navidrome.loadbalancer.server.port=4533"
 
   multi-scrobbler:
     image: foxxmd/multi-scrobbler
