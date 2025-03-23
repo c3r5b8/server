@@ -125,6 +125,22 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.fullfeedrss.rule=Host(`frss.c3r5b8.dev`)"
       - "traefik.http.services.fullfeedrss.loadbalancer.server.port=80"
+    restart: unless-stopped
+
+  freshrss:
+    image: lscr.io/linuxserver/freshrss:latest
+    container_name: freshrss
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/Kyiv
+    volumes:
+      - ./services/freshrss:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.freshrss.rule=Host(`rss.c3r5b8.dev`)"
+      - "traefik.http.services.freshrss.loadbalancer.server.port=80"
+    restart: unless-stopped
 
   hoarder:
     image: ghcr.io/hoarder-app/hoarder:release
