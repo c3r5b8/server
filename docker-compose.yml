@@ -168,6 +168,55 @@ services:
       - "traefik.http.services.rss-bridge.loadbalancer.server.port=80"
     restart: unless-stopped
 
+  redis_rss:
+    image: redis:alpine
+    container_name: rsshub-redis
+    restart: always
+    volumes:
+      - ./services/rsshub/redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+
+  browserless:
+    image: browserless/chrome
+    container_name: rsshub-browserless
+    restart: always
+    ulimits:
+      core:
+        hard: 0
+        soft: 0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/pressure"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  rsshub:
+    image: diygod/rsshub
+    container_name: rsshub
+    restart: always
+    depends_on:
+      - redis_rss
+      - browserless
+    environment:
+      NODE_ENV: production
+      CACHE_TYPE: redis
+      REDIS_URL: "redis://redis_rss:6379/"
+      PUPPETEER_WS_ENDPOINT: "ws://browserless:3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:1200/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rsshub.rule=Host(`feeds.c3r5b8.dev`)"
+      - "traefik.http.services.rsshub.loadbalancer.server.port=1200"
+
   hoarder:
     image: ghcr.io/hoarder-app/hoarder:release
     container_name: hoarder
