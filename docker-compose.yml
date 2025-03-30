@@ -57,24 +57,21 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.qbittorent.rule=Host(`qb.c3r5b8.dev`)"
       - "traefik.http.services.qbittorent.loadbalancer.server.port=8080"
-  pihole:
-    container_name: pihole
-    image: pihole/pihole:latest
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
+
+  dnsmasq:
+    image: dockurr/dnsmasq
+    container_name: dnsmasq
     environment:
-      TZ: 'Europe/Kyiv'
-      FTLCONF_dns_listeningMode: 'all'
+      DNS1: "1.0.0.1"
+      DNS2: "1.1.1.1"
     volumes:
-      - './services/pihole:/etc/pihole'
+      - ./services/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
+    ports:
+      - 53:53/udp
+      - 53:53/tcp
     cap_add:
-      - SYS_NICE
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.pihole.rule=Host(`pihole.c3r5b8.dev`)"
-      - "traefik.http.services.pihole.loadbalancer.server.port=80"
+      - NET_ADMIN
+    restart: always
 
   #
   # media
