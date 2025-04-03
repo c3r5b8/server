@@ -100,8 +100,7 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - /mnt/fat_ssd/media/audiobooks:/audiobooks
-      - /mnt/fat_ssd/media/podcasts:/podcasts
+      - /mnt/fat_ssd/media:/media
       - ./services/audiobookshelf/config:/config
       - ./services/audiobookshelf/metadata:/metadata
     labels:
