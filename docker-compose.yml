@@ -97,6 +97,8 @@ services:
     container_name: audiobookshelf
     environment:
       - TZ=Etc/Kyiv
+      - PUID=1000
+      - PGID=1000
     volumes:
       - /mnt/fat_ssd/media/audiobooks:/audiobooks
       - /mnt/fat_ssd/media/podcasts:/podcasts
