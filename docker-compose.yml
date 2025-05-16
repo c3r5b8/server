@@ -98,6 +98,28 @@ services:
       - "traefik.http.routers.syncthing.rule=Host(`syncthing.c3r5b8.dev`)"
       - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
 
+  fileflows:
+    image: revenz/fileflows
+    restart: unless-stopped
+    # ports:
+    #   - "19200:5000"
+    environment:
+      - TempPathHost=./services/fileflows/temp
+      - TZ=Europe/Kyiv
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./services/fileflows/temp:/temp
+      - ./services/fileflows/data:/app/Data
+      - ./services/fileflows/logs:/app/Logs
+      - ./services/fileflows/common:/app/common
+      - /mnt/fat_ssd/media:/media
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fileflows.rule=Host(`fileflows.c3r5b8.dev`)"
+      - "traefik.http.services.fileflows.loadbalancer.server.port=5000"
+
   radicale:
     image: tomsquest/docker-radicale
     container_name: radicale
