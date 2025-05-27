@@ -24,8 +24,26 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan vm-debian >> ~/.ssh/known_hosts
-  
+
+          echo "Attempting to scan SSH host key for vm-debian..."
+          for i in $(seq 1 5); do
+            echo "Attempt $i of 5..."
+            if ssh-keyscan vm-debian >> ~/.ssh/known_hosts; then
+              echo "Successfully scanned and added vm-debian host key."
+              echo "Contents of known_hosts:"
+              cat ~/.ssh/known_hosts
+              exit 0
+            fi
+            if [ "$i" -lt 5 ]; then
+              echo "Scan failed. Retrying in 2 seconds..."
+              sleep 2
+            else
+              echo "Failed to scan vm-debian host key after 5 attempts."
+              echo "Tailscale status:"
+              tailscale status || echo "Failed to get Tailscale status."
+              exit 1
+            fi
+          done  
       - name: SSH and run commands
         run: |
           ssh -o StrictHostKeyChecking=no c3r5b8@vm-debian <<'EOF'
