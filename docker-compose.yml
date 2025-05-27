@@ -23,6 +23,8 @@ services:
       - "--metrics.prometheus.entryPoint=metrics"
       - "--metrics.prometheus.addEntryPointsLabels=true"
       - "--metrics.prometheus.addServicesLabels=true"
+      - "--accesslog=true"
+      - "--accesslog.format=json"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`proxy.c3r5b8.dev`)"
