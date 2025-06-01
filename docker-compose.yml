@@ -40,7 +40,6 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
-
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
@@ -59,7 +58,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.qbittorent.rule=Host(`qb.c3r5b8.dev`)"
       - "traefik.http.services.qbittorent.loadbalancer.server.port=8080"
-
   dnsmasq:
     image: dockurr/dnsmasq
     container_name: dnsmasq
@@ -74,7 +72,6 @@ services:
     cap_add:
       - NET_ADMIN
     restart: always
-
   syncthing:
     image: syncthing/syncthing
     container_name: syncthing
@@ -85,10 +82,6 @@ services:
     volumes:
       - /mnt/fat_ssd:/var/syncthing
     network_mode: host
-    # ports:
-    #   - 22000:22000/tcp # TCP file transfers
-    #   - 22000:22000/udp # QUIC file transfers
-    #   - 21027:21027/udp # Receive local discovery broadcasts
     restart: unless-stopped
     healthcheck:
       test: curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1
@@ -99,29 +92,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.syncthing.rule=Host(`syncthing.c3r5b8.dev`)"
       - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
-
-  fileflows:
-    image: revenz/fileflows
-    restart: unless-stopped
-    # ports:
-    #   - "19200:5000"
-    environment:
-      - TempPathHost=./services/fileflows/temp
-      - TZ=Europe/Kyiv
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./services/fileflows/temp:/temp
-      - ./services/fileflows/data:/app/Data
-      - ./services/fileflows/logs:/app/Logs
-      - ./services/fileflows/common:/app/common
-      - /mnt/fat_ssd/media:/media
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.fileflows.rule=Host(`fileflows.c3r5b8.dev`)"
-      - "traefik.http.services.fileflows.loadbalancer.server.port=5000"
-
   radicale:
     image: tomsquest/docker-radicale
     container_name: radicale
@@ -149,10 +119,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.radicale.rule=Host(`dav.c3r5b8.dev`)"
       - "traefik.http.services.radicale.loadbalancer.server.port=5232"
-
   #
   # media
-
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
@@ -168,7 +136,6 @@ services:
       - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.c3r5b8.dev`)"
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
     restart: unless-stopped
-
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:latest
     container_name: audiobookshelf
@@ -185,7 +152,6 @@ services:
       - "traefik.http.routers.audiobookshelf.rule=Host(`audiobooks.c3r5b8.dev`)"
       - "traefik.http.services.audiobookshelf.loadbalancer.server.port=80"
     restart: unless-stopped
-
   multi-scrobbler:
     image: foxxmd/multi-scrobbler
     container_name: multi-scrobbler
@@ -201,7 +167,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.multi-scrobbler.rule=Host(`multiscrobbler.c3r5b8.dev`)"
       - "traefik.http.services.multi-scrobbler.loadbalancer.server.port=9078"
-
   #
   # RSS
   fullfeedrss:
@@ -216,7 +181,6 @@ services:
       - "traefik.http.routers.fullfeedrss.rule=Host(`frss.c3r5b8.dev`)"
       - "traefik.http.services.fullfeedrss.loadbalancer.server.port=80"
     restart: unless-stopped
-
   freshrss:
     image: lscr.io/linuxserver/freshrss:latest
     container_name: freshrss
@@ -231,7 +195,6 @@ services:
       - "traefik.http.routers.freshrss.rule=Host(`rss.c3r5b8.dev`)"
       - "traefik.http.services.freshrss.loadbalancer.server.port=80"
     restart: unless-stopped
-
   rss-bridge:
     image: rssbridge/rss-bridge:latest
     container_name: rss-bridge
@@ -242,43 +205,6 @@ services:
       - "traefik.http.routers.rss-bridge.rule=Host(`rssb.c3r5b8.dev`)"
       - "traefik.http.services.rss-bridge.loadbalancer.server.port=80"
     restart: unless-stopped
-
-  hoarder:
-    image: ghcr.io/hoarder-app/hoarder:release
-    container_name: hoarder
-    restart: unless-stopped
-    volumes:
-      - ./services/hoarder/data:/data
-    environment:
-      MEILI_ADDR: http://meilisearch:7700
-      BROWSER_WEB_URL: http://chrome:9222
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
-      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
-      DATA_DIR: /data
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.hoarder.rule=Host(`hoarder.c3r5b8.dev`)"
-      - "traefik.http.services.hoarder.loadbalancer.server.port=3000"
-  chrome:
-    image: gcr.io/zenika-hub/alpine-chrome:123
-    container_name: chrome
-    restart: unless-stopped
-    command:
-      - --no-sandbox
-      - --disable-gpu
-      - --disable-dev-shm-usage
-      - --remote-debugging-address=0.0.0.0
-      - --remote-debugging-port=9222
-      - --hide-scrollbars
-  meilisearch:
-    image: getmeili/meilisearch:v1.11.1
-    container_name: meilisearch
-    restart: unless-stopped
-    environment:
-      MEILI_NO_ANALYTICS: "true"
-    volumes:
-      - ./services/hoarder/meilisearch:/meili_data
-
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
@@ -288,7 +214,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
-
   memos:
     image: neosmemo/memos:stable
     container_name: memos
@@ -299,7 +224,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.memos.rule=Host(`memo.c3r5b8.dev`)"
       - "traefik.http.services.memos.loadbalancer.server.port=5230"
-
   vaultwarden:
     image: vaultwarden/server:latest
     container_name: vaultwarden
@@ -313,7 +237,6 @@ services:
     environment:
       - DOMAIN=https://pass.c3r5b8.dev
       - WEBSOCKET_ENABLED=true
-
   dozzle:
     image: amir20/dozzle:latest
     container_name: dozzle
@@ -326,55 +249,3 @@ services:
       - "traefik.http.routers.dozzle.rule=Host(`dozzle.c3r5b8.dev`)"
     environment:
       DOZZLE_AUTH_PROVIDER: simple
-
-  #
-  # immich
-
-  immich-server:
-    container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
-    volumes:
-      - ${UPLOAD_LOCATION}:/usr/src/app/upload
-      - /etc/localtime:/etc/localtime:ro
-    env_file:
-      - .env
-
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.immich-server.rule=Host(`immich.c3r5b8.dev`)"
-      - "traefik.http.services.immich-server.loadbalancer.server.port=2283"
-
-    depends_on:
-      - redis
-      - database
-    restart: always
-
-  immich-machine-learning:
-    container_name: immich_machine_learning
-    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
-    volumes:
-      - model-cache:/cache
-    env_file:
-      - .env
-    restart: always
-
-  redis:
-    container_name: immich_redis
-    image: registry.hub.docker.com/library/redis:6.2-alpine@sha256:84882e87b54734154586e5f8abd4dce69fe7311315e2fc6d67c29614c8de2672
-    restart: always
-
-  database:
-    container_name: immich_postgres
-    image: registry.hub.docker.com/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_DB: ${DB_DATABASE_NAME}
-      POSTGRES_INITDB_ARGS: '--data-checksums'
-    volumes:
-      - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
-    restart: always
-    command: [ "postgres", "-c", "shared_preload_libraries=vectors.so", "-c", 'search_path="$$user", public, vectors', "-c", "logging_collector=on", "-c", "max_wal_size=2GB", "-c", "shared_buffers=512MB", "-c", "wal_compression=on" ]
-
-volumes:
-  model-cache:
