@@ -136,16 +136,6 @@ services:
       - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.c3r5b8.dev`)"
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
     restart: unless-stopped
-  storyteller:
-    image: registry.gitlab.com/storyteller-platform/storyteller:latest
-    volumes:
-      - /mnt/fat_ssd/media/audiobooks:/data:rw
-    environment:
-      - STORYTELLER_SECRET_KEY=$STORYTELLER_SECRET_KEY
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.storyteller.rule=Host(`storyteller.c3r5b8.dev`)"
-      - "traefik.http.services.storyteller.loadbalancer.server.port=8001"
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:latest
     container_name: audiobookshelf
