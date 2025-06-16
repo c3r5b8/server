@@ -138,7 +138,6 @@ services:
     restart: unless-stopped
   storyteller:
     image: registry.gitlab.com/storyteller-platform/storyteller:latest
-    restart: unless-stopped
     volumes:
       - /mnt/fat_ssd/media/audiobooks:/data:rw
     environment:
