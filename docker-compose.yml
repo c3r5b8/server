@@ -40,7 +40,9 @@ services:
       - "./services/traefik/acme.json:/acme.json"
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    restart: unless-stopped
+    networks:
+      - default
+      - proxy
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
@@ -277,7 +279,6 @@ services:
     restart: unless-stopped
     cap_add:
       - SYS_ADMIN
-
   factorio:
     image: factoriotools/factorio:stable
     container_name: factorio
@@ -290,3 +291,6 @@ services:
     volumes:
       - ./services/factorio:/factorio
     restart: unless-stopped
+networks:
+  proxy:
+    external: true
