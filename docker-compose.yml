@@ -40,6 +40,7 @@ services:
       - "./services/traefik/acme.json:/acme.json"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    restart: unless-stopped
     networks:
       - default
       - proxy
