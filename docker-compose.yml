@@ -295,6 +295,22 @@ services:
     restart: unless-stopped
     cap_add:
       - SYS_ADMIN
+  terraria:
+    container_name: terraria
+    image: ghcr.io/beardedio/terraria:latest
+    ports:
+      - '7777:7777'
+    restart: unless-stopped
+    environment:
+      - world=idk.wld
+    volumes:
+      - ./services/terraria2/config:/config
+    tty: true
+    stdin_open: true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.terraria.rule=Host(`terraria.c3r5b8.dev`)"
+      - "traefik.http.services.terraria.loadbalancer.server.port=7777"
   factorio:
     image: factoriotools/factorio:stable
     container_name: factorio
