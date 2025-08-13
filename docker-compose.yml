@@ -123,8 +123,21 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.radicale.rule=Host(`dav.c3r5b8.dev`)"
       - "traefik.http.services.radicale.loadbalancer.server.port=5232"
-  #
-  # media
+  glance:
+    container_name: glance
+    image: glanceapp/glance
+    restart: unless-stopped
+    volumes:
+      - ./services/glance/config:/app/config
+      # - ./assets:/app/assets
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.glance.rule=Host(`glance.c3r5b8.dev`)"
+      - "traefik.http.services.glance.loadbalancer.server.port=8080"
+#
+# media
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
