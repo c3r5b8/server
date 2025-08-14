@@ -267,33 +267,6 @@ services:
       - "traefik.http.routers.dozzle.rule=Host(`dozzle.c3r5b8.dev`)"
     environment:
       DOZZLE_AUTH_PROVIDER: simple
-  changedetection:
-    image: ghcr.io/dgtlmoon/changedetection.io:latest
-    container_name: changedetection
-    hostname: changedetection
-    restart: unless-stopped
-    volumes:
-      - ./services/changedetection:/datastore
-    environment:
-      - PLAYWRIGHT_DRIVER_URL=ws://browser-sockpuppet-chrome:3000
-      - TZ=Europe/Kyiv
-      - BASE_URL=https://watch.c3r5b8.dev
-      - HIDE_REFERER=true
-      - DISABLE_VERSION_CHECK=true
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.changedetection.rule=Host(`watch.c3r5b8.dev`)"
-      - "traefik.http.services.changedetection.loadbalancer.server.port=5000"
-    depends_on:
-      browser-sockpuppet-chrome:
-        condition: service_started
-  browser-sockpuppet-chrome:
-    image: dgtlmoon/sockpuppetbrowser:latest
-    container_name: browser-sockpuppet-chrome
-    hostname: browser-sockpuppet-chrome
-    restart: unless-stopped
-    cap_add:
-      - SYS_ADMIN
   terraria:
     container_name: terraria
     image: ghcr.io/beardedio/terraria:latest
@@ -310,18 +283,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.terraria.rule=Host(`terraria.c3r5b8.dev`)"
       - "traefik.http.services.terraria.loadbalancer.server.port=7777"
-  factorio:
-    image: factoriotools/factorio:stable
-    container_name: factorio
-    environment:
-      - INSTANCE_NAME=Mazafuckers
-      - INSTANCE_DESC=idk
-    ports:
-      - "34197:34197/udp"
-      - "27015:27015/tcp"
-    volumes:
-      - ./services/factorio:/factorio
-    restart: unless-stopped
 networks:
   proxy:
     external: true
