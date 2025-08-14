@@ -96,33 +96,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.syncthing.rule=Host(`syncthing.c3r5b8.dev`)"
       - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
-  radicale:
-    image: tomsquest/docker-radicale
-    container_name: radicale
-    init: true
-    read_only: true
-    security_opt:
-      - no-new-privileges:true
-    cap_drop:
-      - ALL
-    cap_add:
-      - SETUID
-      - SETGID
-      - CHOWN
-      - KILL
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-          pids: 50
-    restart: unless-stopped
-    volumes:
-      - ./services/radicale/data:/data
-      - ./services/radicale/config:/config:ro
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.radicale.rule=Host(`dav.c3r5b8.dev`)"
-      - "traefik.http.services.radicale.loadbalancer.server.port=5232"
   glance:
     container_name: glance
     image: glanceapp/glance
@@ -185,44 +158,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.multi-scrobbler.rule=Host(`multiscrobbler.c3r5b8.dev`)"
       - "traefik.http.services.multi-scrobbler.loadbalancer.server.port=9078"
-  #
-  # RSS
-  fullfeedrss:
-    image: 'heussd/fivefilters-full-text-rss:latest'
-    container_name: fullfeedrss
-    environment:
-      - FTR_ADMIN_PASSWORD=
-    volumes:
-      - './services/fullfeedrss:/var/www/html/cache/rss'
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.fullfeedrss.rule=Host(`frss.c3r5b8.dev`)"
-      - "traefik.http.services.fullfeedrss.loadbalancer.server.port=80"
-    restart: unless-stopped
-  freshrss:
-    image: lscr.io/linuxserver/freshrss:latest
-    container_name: freshrss
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/Kyiv
-    volumes:
-      - ./services/freshrss:/config
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.freshrss.rule=Host(`rss.c3r5b8.dev`)"
-      - "traefik.http.services.freshrss.loadbalancer.server.port=80"
-    restart: unless-stopped
-  rss-bridge:
-    image: rssbridge/rss-bridge:latest
-    container_name: rss-bridge
-    volumes:
-      - ./services/rss-bridge:/config
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.rss-bridge.rule=Host(`rssb.c3r5b8.dev`)"
-      - "traefik.http.services.rss-bridge.loadbalancer.server.port=80"
-    restart: unless-stopped
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
