@@ -133,7 +133,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /:/host:ro
-      - /mnt/fat_ssd:/host_data:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.glance.rule=Host(`glance.c3r5b8.dev`)"
