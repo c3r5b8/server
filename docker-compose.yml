@@ -66,10 +66,11 @@ services:
     container_name: technitium
     hostname: technitium
     image: technitium/dns-server:latest
+    network_mode: "host"
     ports:
       # - "5380:5380/tcp" #DNS web console (HTTP)
-      - "53:53/udp" #DNS service
-      - "53:53/tcp" #DNS service
+      # - "53:53/udp" #DNS service
+      # - "53:53/tcp" #DNS service
     environment:
       - DNS_SERVER_DOMAIN=technitium #The primary domain name used by this DNS Server to identify itself.
       - DNS_SERVER_ADMIN_PASSWORD=${DNS_SERVER_ADMIN_PASSWORD}
