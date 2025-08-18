@@ -67,7 +67,7 @@ services:
     hostname: technitium
     image: technitium/dns-server:latest
     network_mode: "host"
-    ports:
+    # ports:
       # - "5380:5380/tcp" #DNS web console (HTTP)
       # - "53:53/udp" #DNS service
       # - "53:53/tcp" #DNS service
