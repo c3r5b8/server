@@ -88,20 +88,20 @@ services:
       - "traefik.http.services.technitium.loadbalancer.server.port=5380"
 
 
-  dnsmasq:
-    image: dockurr/dnsmasq
-    container_name: dnsmasq
-    environment:
-      DNS1: "1.0.0.1"
-      DNS2: "1.1.1.1"
-    volumes:
-      - ./services/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
-    ports:
-      - 53:53/udp
-      - 53:53/tcp
-    cap_add:
-      - NET_ADMIN
-    restart: always
+  # dnsmasq:
+  #   image: dockurr/dnsmasq
+  #   container_name: dnsmasq
+  #   environment:
+  #     DNS1: "1.0.0.1"
+  #     DNS2: "1.1.1.1"
+  #   volumes:
+  #     - ./services/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
+  #   ports:
+  #     - 53:53/udp
+  #     - 53:53/tcp
+  #   cap_add:
+  #     - NET_ADMIN
+  #   restart: always
   syncthing:
     image: syncthing/syncthing
     container_name: syncthing
