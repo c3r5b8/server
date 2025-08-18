@@ -81,8 +81,8 @@ services:
     volumes:
       - ./services/technitium:/etc/dns
     restart: unless-stopped
-    sysctls:
-      - net.ipv4.ip_local_port_range=1024 65000
+    # sysctls:
+    #   - net.ipv4.ip_local_port_range=1024 65000
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.technitium.rule=Host(`dns.c3r5b8.dev`)"
